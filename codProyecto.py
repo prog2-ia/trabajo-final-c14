@@ -44,3 +44,45 @@ class Playlist:
         for p in self.pistas:
             print(p.info())
         print(f"Duración total: {self.duracion_total()}s")
+
+# CLASE BIBLIOTECA
+class Biblioteca:
+    def _init_(self):
+        self.pistas = []
+        self.playlists = []
+
+    def agregar_pista(self, pista):
+        self.pistas.append(pista)
+
+    def crear_playlist(self, playlist):
+        self.playlists.append(playlist)
+
+    def buscar_por_genero(self, genero):
+        resultado = []
+        for p in self.pistas:
+            if p.genero == genero:
+                resultado.append(p)
+        return resultado
+
+# DEMO
+if _name_ == "_main_":
+    p1 = Pista("Numb", "Linkin Park", "rock", 185)
+    p2 = Pista("Blinding Lights", "The Weeknd", "pop", 200)
+    p3 = Pista("Viva la Vida", "Coldplay", "pop", 240)
+
+    print("Duración válida:", Pista.duracion_valida(200))
+
+    biblio = Biblioteca()
+    biblio.agregar_pista(p1)
+    biblio.agregar_pista(p2)
+    biblio.agregar_pista(p3)
+
+    lista = Playlist("Viaje", "feliz")
+    lista.agregar_pista(p2)
+    lista.agregar_pista(p3)
+
+    biblio.crear_playlist(lista)
+
+    lista.mostrar()
+
+    print("Total pistas creadas:", Pista.cantidad_pistas())
