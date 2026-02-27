@@ -65,7 +65,7 @@ class Biblioteca:
         return resultado
 
 # DEMO
-if _name_ == "_main_":
+if __name__== "_main_":
     p1 = Pista("Numb", "Linkin Park", "rock", 185)
     p2 = Pista("Blinding Lights", "The Weeknd", "pop", 200)
     p3 = Pista("Viva la Vida", "Coldplay", "pop", 240)
