@@ -2,11 +2,14 @@
 class Pista:
     total_pistas = 0  # atributo de clase
 
-    def __init__(self, titulo, artista, genero, duracion):
+    def __init__(self, titulo, artista, genero, duracion, estado_animo=None, calidad=None, favorita=False):
         self.titulo = titulo
         self.artista = artista
         self.genero = genero
         self.duracion = duracion  # segundos
+        self.estado_animo = estado_animo
+        self.calidad = calidad
+        self.favorita = favorita
         Pista.total_pistas += 1
 
     def info(self):
@@ -19,3 +22,4 @@ class Pista:
     @staticmethod
     def duracion_valida(duracion):
         return duracion > 0
+    
