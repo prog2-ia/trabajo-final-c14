@@ -1,19 +1,18 @@
+from coleccion_musical import ColeccionMusical
+
 class Playlist:
-    def __init__(self, nombre, estado_animo):
-        self.nombre = nombre
+    def __init__(self, titulo, estado_animo):
+        super().__init__(titulo)
         self.estado_animo = estado_animo
-        self.pistas = []
 
-    def agregar_pista(self, pista):
-        self.pistas.append(pista)
-
-    def duracion_total(self):
-        total = 0
+    def filtrar_por_estado(self):
+        resultado = []
         for p in self.pistas:
-            total += p.duracion
-        return total
+            if p.estado_animo == self.estado_animo:
+                resultado.append(p)
+        return resultado
 
-    def mostrar(self):
-        print(f"Playlist: {self.nombre}")
+    def mostrar_playlist(self):
+        print(f"Playlist: {self.titulo}")
         for p in self.pistas:
             print(p.info())
