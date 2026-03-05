@@ -39,5 +39,3 @@ class Biblioteca:
                           if p.calidad.lower() == calidad.lower()]
 
         return resultados
-
-   
