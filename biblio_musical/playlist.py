@@ -1,6 +1,6 @@
 from coleccion_musical import ColeccionMusical
 
-class Playlist:
+class Playlist(ColeccionMusical):
     def __init__(self, titulo, estado_animo):
         super().__init__(titulo)
         self.estado_animo = estado_animo
