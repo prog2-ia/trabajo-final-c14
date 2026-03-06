@@ -1,6 +1,6 @@
 from coleccion_musical import ColeccionMusical
 
-class Album:
+class Album(ColeccionMusical):
     def __init__(self, titulo, artista):
         super().__init__(titulo)
         self.artista = artista
