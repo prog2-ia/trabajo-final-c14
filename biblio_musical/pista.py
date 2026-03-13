@@ -15,7 +15,7 @@ class Pista(ElementoMusical):
         self.favorita = True 
 
     def quitar_favorita(self): 
-        self.favorita = True
+        self.favorita = False
 
     def info(self):
         base_info = super().info()
@@ -25,8 +25,4 @@ class Pista(ElementoMusical):
     @classmethod
     def cantidad_pistas(cls):
         return cls.total_pistas
-
-    @staticmethod
-    def duracion_valida(duracion):
-        return duracion > 0
     

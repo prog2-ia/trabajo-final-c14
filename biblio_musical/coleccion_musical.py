@@ -1,4 +1,5 @@
 from contenido import Contenido
+from estadistica import Estadistica
 
 class ColeccionMusical(Contenido): 
     def __init__(self, titulo): 
@@ -13,10 +14,7 @@ class ColeccionMusical(Contenido):
             self.pistas.remove(pista) 
 
     def duracion_total(self):
-        total = 0
-        for p in self.pistas: 
-            total += p.duracion
-        return total 
+        return Estadistica.duracion_total(self.pistas) 
     
     def total_pistas(self): 
         return len(self.pistas) 

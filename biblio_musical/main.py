@@ -3,11 +3,12 @@ from playlist import Playlist
 from biblioteca import Biblioteca
 from reproductor import Reproductor
 from estadistica import Estadistica
+from genero import Genero
 
 if __name__ == "__main__":
 
-    p1 = Pista("Numb", "Linkin Park", "rock", 185)
-    p2 = Pista("Viva la Vida", "Coldplay", "pop", 240)
+    p1 = Pista("Numb", "Linkin Park", Genero("rock"), 185)
+    p2 = Pista("Viva la Vida", "Coldplay", Genero("pop"), 240)
 
     lista = Playlist("Viaje", "feliz")
     lista.agregar_pista(p1)
