@@ -1,3 +1,5 @@
+from usuario import Usuario
+
 class UsuarioAdministrador(Usuario):
 
     def eliminar_playlist(self, usuario, playlist):

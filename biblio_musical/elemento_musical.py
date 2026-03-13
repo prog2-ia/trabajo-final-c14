@@ -8,8 +8,8 @@ class ElementoMusical(Contenido):
         self.genero = genero
         self.duracion = duracion
 
-    def info_basica(self):
-        return f"{self.artista} - {self.titulo}"
+    def info(self):
+        return f"{self.artista} - {self.titulo}- {self.genero} ({self.duracion} min)"
 
     def cambiar_genero(self, nuevo_genero):
         self.genero = nuevo_genero

@@ -1,3 +1,5 @@
+from usuario import Usuario
+
 class UsuarioPremium(Usuario):
 
     def __init__(self, nombre):
