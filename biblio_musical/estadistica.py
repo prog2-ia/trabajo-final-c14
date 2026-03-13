@@ -21,10 +21,8 @@ class Estadistica:
     @staticmethod
     def duracion_total(lista_pistas):
         total = 0
-
         for p in lista_pistas:
             total += p.duracion
-
         return total
 
 
