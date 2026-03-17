@@ -1,28 +1,34 @@
-# CLASE PISTA 
 from elemento_musical import ElementoMusical
 
 class Pista(ElementoMusical):
-    total_pistas = 0  # atributo de clase
+    """Representa una pista musical."""
 
-    def __init__(self, titulo, artista, genero, duracion, estado_animo=None, calidad=None, favorita=False):
+    total_pistas = 0
+
+    def __init__(self, titulo, artista, genero, duracion, favorita=False):
         super().__init__(titulo, artista, genero, duracion)
-        self.estado_animo = estado_animo
-        self.calidad = calidad
-        self.favorita = favorita
+        self._favorita = favorita
+
         Pista.total_pistas += 1
 
-    def marcar_favorita(self): 
-        self.favorita = True 
+    def marcar_favorita(self):
+        """Marca la pista como favorita."""
+        self._favorita = True
 
-    def quitar_favorita(self): 
-        self.favorita = False
+    def quitar_favorita(self):
+        """Quita la pista de favoritas."""
+        self._favorita = False
 
-    def info(self):
-        base_info = super().info()
-        extra_info = f" Estado de ánimo: {self.estado_animo}, Calidad: {self.calidad}, Favorita: {'Sí' if self.favorita else 'No'}"
-        return base_info + extra_info
+    def reproducir(self):
+        """Reproduce."""
+        print(f" Reproduciendo: {self._nombre} - {self._artista}")
 
     @classmethod
     def cantidad_pistas(cls):
         return cls.total_pistas
-    
+
+    def __str__(self):
+        return f"Pista: {self._nombre} - {self._artista} ({self._duracion}s)"
+
+    def __repr__(self):
+        return f"Pista('{self._nombre}', '{self._artista}', '{self._genero}', {self._duracion})"
