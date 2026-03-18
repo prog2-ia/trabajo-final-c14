@@ -13,7 +13,7 @@ class PlaylistCompartida(Playlist):
     def agregar_pista(self, pista, usuario):
 
         if usuario in self.colaboradores:
-            self.pistas.append(pista)
+            self._pistas.append(pista)
             print(f"{usuario.nombre} añadió {pista.titulo}")
         else:
             print("No tienes permiso para modificar esta playlist.")

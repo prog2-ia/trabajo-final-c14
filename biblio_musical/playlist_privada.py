@@ -9,13 +9,13 @@ class PlaylistPrivada(Playlist):
     def mostrar_playlist(self, usuario):
         if usuario == self.propietario:
             print(f"Playlist privada: {self.titulo}")
-            for p in self.pistas:
+            for p in self._pistas:
                 print(p.info())
         else:
             print("No tienes permiso para ver esta playlist.")
 
     def __str__(self):
-        return f"Playlist privada de {self.propietario}: {self.titulo} (Estado de ánimo: {self.estado_animo})"
+        return f"Playlist privada: {self.titulo} (Estado de ánimo: {self.estado_animo}, propietario='{self.propietario}')"
 
     def __repr__(self):
         return f"PlaylistPrivada(titulo='{self.titulo}', estado_animo='{self.estado_animo}', propietario='{self.propietario}')"

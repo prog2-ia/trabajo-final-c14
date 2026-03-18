@@ -4,10 +4,10 @@ class Contenido(ABC):
     """Clase abstracta base para cualquier contenido musical."""
 
     def __init__(self, titulo):
-        self._nombre = titulo
+        self.titulo = titulo
 
     def mostrar_titulo(self):
-        return self._nombre
+        return self.titulo
 
     @abstractmethod
     def reproducir(self):
@@ -15,10 +15,10 @@ class Contenido(ABC):
         pass
 
     def descripcion(self):
-        return f"Contenido: {self._nombre}"
+        return f"Contenido: {self.titulo}"
 
     def __str__(self):
-        return f"Contenido: {self._nombre}"
+        return f"Contenido: {self.titulo}"
 
     def __repr__(self):
-        return f"Contenido(titulo='{self._nombre}')"
+        return f"Contenido(titulo='{self.titulo}')"

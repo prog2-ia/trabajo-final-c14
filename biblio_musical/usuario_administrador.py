@@ -3,9 +3,9 @@ from usuario import Usuario
 class UsuarioAdministrador(Usuario):
 
     def eliminar_playlist(self, usuario, playlist):
-        if playlist in usuario.playlists:
-            usuario.playlists.remove(playlist)
-            print(f"Playlist {playlist.nombre} eliminada del usuario {usuario.nombre}")
+        if playlist in usuario._playlists:
+            usuario._playlists.remove(playlist)
+            print(f"Playlist {playlist.titulo} eliminada del usuario {usuario.nombre}")
 
     def __str__(self):
         return f"Usuario Administrador: {self.nombre}"

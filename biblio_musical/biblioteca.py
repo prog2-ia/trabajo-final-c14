@@ -22,27 +22,20 @@ class Biblioteca:
         for pl in self._playlists:
             pl.reproducir()
 
-    def buscar(self, genero=None, artista=None, max_duracion=None,
-               estado_animo=None, calidad=None):
-
+    def buscar(self, genero=None, artista=None, max_duracion=None,estado_animo=None, calidad=None):
         resultados = self._pistas
-
         if genero is not None:
             resultados = [p for p in resultados
                           if p._genero.nombre.lower() == genero.lower()]
-
         if artista is not None:
             resultados = [p for p in resultados
                           if p._artista.lower() == artista.lower()]
-
         if max_duracion is not None:
             resultados = [p for p in resultados
                           if p._duracion <= max_duracion]
-
         if estado_animo is not None:
             resultados = [p for p in resultados
                           if p._estado_animo and p._estado_animo.lower() == estado_animo.lower()]
-
         if calidad is not None:
             resultados = [p for p in resultados
                           if p._calidad and p._calidad.lower() == calidad.lower()]

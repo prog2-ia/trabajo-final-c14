@@ -5,11 +5,11 @@ class PlaylistPublica(Playlist):
     def mostrar_playlist(self):
         print(f"Playlist pública: {self.titulo}")
 
-        if not self.pistas:
+        if not self._pistas:
             print("No hay pistas en la playlist.")
             return
 
-        for p in self.pistas:
+        for p in self._pistas:
             print(p.info())
 
     def __str__(self):
