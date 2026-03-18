@@ -1,4 +1,4 @@
-    from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod
 
 class Contenido(ABC):
     """Clase abstracta base para cualquier contenido musical."""

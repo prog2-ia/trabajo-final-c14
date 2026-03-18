@@ -9,3 +9,9 @@ class Usuario:
     def mostrar_playlists(self):
         for p in self.playlists:
             print(p.nombre)
+
+    def __str__(self):
+        return f"Usuario: {self.nombre}"
+
+    def __repr__(self):
+        return f"Usuario(nombre='{self.nombre}')"

@@ -13,3 +13,9 @@ class PlaylistPrivada(Playlist):
                 print(p.info())
         else:
             print("No tienes permiso para ver esta playlist.")
+
+    def __str__(self):
+        return f"Playlist privada de {self.propietario}: {self.titulo} (Estado de ánimo: {self.estado_animo})"
+
+    def __repr__(self):
+        return f"PlaylistPrivada(titulo='{self.titulo}', estado_animo='{self.estado_animo}', propietario='{self.propietario}')"

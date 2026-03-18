@@ -11,3 +11,9 @@ class PlaylistPublica(Playlist):
 
         for p in self.pistas:
             print(p.info())
+
+    def __str__(self):
+        return f"Playlist pública: {self.titulo} (Estado de ánimo: {self.estado_animo})"
+    
+    def __repr__(self):
+        return f"Playlist(titulo='{self.titulo}', estado_animo='{self.estado_animo}')"
