@@ -6,16 +6,10 @@ class Contenido(ABC):
     def __init__(self, titulo):
         self.titulo = titulo
 
-    def mostrar_titulo(self):
-        return self.titulo
-
     @abstractmethod
     def reproducir(self):
         """Cada contenido debe definir cómo se reproduce."""
         pass
-
-    def descripcion(self):
-        return f"Contenido: {self.titulo}"
 
     def __str__(self):
         return f"Contenido: {self.titulo}"

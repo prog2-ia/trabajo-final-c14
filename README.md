@@ -1,5 +1,3 @@
-
-<<<<<<< HEAD
 =======
 # Biblioteca Musical
 
@@ -131,4 +129,4 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo LICENSE para más detal
 ## Autoras
 
 María Mestre Sánchez, Sandra Crevillen Contreras.
->>>>>>> e022122 (readme)
+
