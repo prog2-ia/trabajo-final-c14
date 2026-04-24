@@ -1,145 +1,138 @@
 from pista import Pista
 from playlist import Playlist
-from playlist_publica import PlaylistPublica
-from playlist_privada import PlaylistPrivada
-from playlist_compartida import PlaylistCompartida
 from biblioteca import Biblioteca
-from reproductor import Reproductor
-from estadistica import Estadistica
 from genero import Genero
-from artista import Artista
-from album import Album
-from usuario import Usuario
-from usuario_gratis import UsuarioGratis
-from usuario_premium import UsuarioPremium
-from usuario_administrador import UsuarioAdministrador
-from usuario_super import UsuarioSuper
 from validador import Validador
 
-if __name__ == "__main__":
-    print("==== PRUEBA DEL CÓDIGO ===\n")
+genero_referencias = [
+    "Rock",
+    "Pop",
+    "Jazz",
+    "Clásica",
+    "Electrónica",
+    "Hip-Hop",
+    "Reggae",
+    "Blues",
+]
 
-    # Crear géneros
+
+def crear_datos_ejemplo(biblioteca):
     rock = Genero("Rock")
     pop = Genero("Pop")
+    jazz = Genero("Jazz")
 
-    # Crear pistas
     p1 = Pista("Blinding Lights", "The Weeknd", rock, 185)
     p2 = Pista("Levitating", "Dua Lipa", pop, 240)
-    p3 = Pista("Good 4 U", "Olivia Rodrigo", pop, 355)
+    p3 = Pista("Good 4 U", "Olivia Rodrigo", pop, 200)
+    p4 = Pista("Take Five", "Dave Brubeck", jazz, 330)
 
-    print("Pistas creadas:")
-    print(p1)
-    print(p2)
-    print(p3)
-    print(f"Total pistas: {Pista.total_pistas}\n")
+    biblioteca.agregar_pista(p1)
+    biblioteca.agregar_pista(p2)
+    biblioteca.agregar_pista(p3)
+    biblioteca.agregar_pista(p4)
 
-    # Marcar favorita
-    p1.marcar_favorita()
-    print(f"{p1.titulo} es favorita: {p1.is_favorita()}\n")
+    playlist1 = Playlist("Viaje", "Feliz")
+    playlist1.agregar_pista(p1)
+    playlist1.agregar_pista(p2)
+    biblioteca.crear_playlist(playlist1)
 
-    # Crear artista
-    artista1 = Artista("The Weeknd")
-    album1 = Album("After Hours", artista1, 2020)
-    artista1.agregar_album(album1)
-    print(f"Artista: {artista1.nombre}")
-    artista1.mostrar_albums()
-    print()
+    playlist2 = Playlist("Descanso", "Relajado")
+    playlist2.agregar_pista(p3)
+    playlist2.agregar_pista(p4)
+    biblioteca.crear_playlist(playlist2)
 
-    # Crear playlists
-    playlist_normal = Playlist("Viaje", "feliz")
-    playlist_normal.agregar_pista(p1)
-    playlist_normal.agregar_pista(p2)
+    return biblioteca
 
-    playlist_publica = PlaylistPublica("Fiesta", "energico")
-    playlist_publica.agregar_pista(p2)
-    playlist_publica.agregar_pista(p3)
 
-    usuario1 = Usuario("Juan", "juan@email.com", 25, "Madrid")
-    playlist_privada = PlaylistPrivada("Privada", "tranquilo", usuario1)
-    playlist_privada.agregar_pista(p1)
+def mostrar_menu():
+    print("\n=== MENÚ - BIBLIOTECA MUSICAL ===")
+    print("1. Ver todas las pistas")
+    print("2. Ver todas las playlists")
+    print("3. Crear nueva pista")
+    print("4. Crear nueva playlist")
+    print("5. Agregar pista a playlist")
+    print("6. Buscar pistas")
+    print("7. Reproducir pista")
+    print("8. Reproducir playlist")
+    print("9. Estadísticas básicas")
+    print("0. Salir")
 
-    playlist_compartida = PlaylistCompartida("Compartida", "divertido")
-    playlist_compartida.agregar_colaborador(usuario1)
-    playlist_compartida.agregar_pista(p3, usuario1)
 
-    print("Playlists creadas:")
-    print(playlist_normal)
-    print(playlist_publica)
-    print(playlist_privada)
-    print(playlist_compartida)
-    print()
+def pedir_genero():
+    print("Géneros disponibles:")
+    for genero in genero_referencias:
+        print(f" - {genero}")
 
-    # Mostrar playlists
-    print("Contenido de playlist normal:")
-    playlist_normal.mostrar_playlist()
-    print()
+    while True:
+        texto = input("Introduce un género: ").strip().title()
+        if Validador.genero_valido(texto):
+            return Genero(texto)
+        print("Género no válido. Prueba otro de la lista.")
 
-    print("Contenido de playlist pública:")
-    playlist_publica.mostrar_playlist()
-    print()
 
-    print("Contenido de playlist privada (usuario correcto):")
-    playlist_privada.mostrar_playlist(usuario1)
-    print()
+def pedir_duracion():
+    while True:
+        valor = input("Introduce la duración en segundos: ").strip()
+        if not valor.isdigit():
+            print("Introduce un número entero positivo.")
+            continue
+        duracion = int(valor)
+        if Validador.duracion_valida(duracion):
+            return duracion
+        print("La duración debe ser mayor que 0.")
 
-    # Usuarios
-    usuario_gratis = UsuarioGratis("Ana", "ana@email.com", 22, "Barcelona")
-    usuario_premium = UsuarioPremium("Carlos", "carlos@email.com", 30, "Valencia")
-    usuario_admin = UsuarioAdministrador("Admin", "admin@email.com", 35, "Sevilla")
-    usuario_super = UsuarioSuper("SuperUser", "super@email.com", 28, "Bilbao")
 
-    print("Usuarios creados:")
-    print(usuario_gratis)
-    print(usuario_premium)
-    print(usuario_admin)
-    print(usuario_super)
-    print()
+def listar_pistas(biblioteca):
+    if not biblioteca._pistas:
+        print("No hay pistas en la biblioteca.")
+        return
+    print("\nPistas disponibles:")
+    for idx, pista in enumerate(biblioteca._pistas, start=1):
+        print(f"{idx}. {pista}")
 
-    # Crear playlists para usuarios
-    usuario_gratis.crear_playlist(playlist_normal)
-    usuario_premium.crear_playlist(playlist_publica)
-    usuario_admin.crear_playlist(playlist_privada)
 
-    print("Playlists de usuario gratis:")
-    usuario_gratis.mostrar_playlists()
-    print()
+def listar_playlists(biblioteca):
+    if not biblioteca._playlists:
+        print("No hay playlists en la biblioteca.")
+        return
+    print("\nPlaylists disponibles:")
+    for idx, playlist in enumerate(biblioteca._playlists, start=1):
+        print(f"{idx}. {playlist}")
 
-    # Buscar playlist
-    encontrada = usuario_gratis.buscar_playlist("Viaje")
-    if encontrada:
-        print(f"Playlist encontrada: {encontrada}")
-    else:
-        print("Playlist no encontrada")
-    print()
 
-    # Funciones de premium y admin
-    usuario_premium.descargar_playlist(playlist_publica)
-    usuario_admin.eliminar_playlist(usuario_gratis, playlist_normal)
-    print()
+def buscar_pista_por_titulo(biblioteca, titulo):
+    titulo = titulo.strip().lower()
+    for pista in biblioteca._pistas:
+        if pista.titulo.strip().lower() == titulo:
+            return pista
+    return None
 
-    # Usuario super
-    usuario_super.gestionar_y_descargar(usuario_premium, playlist_publica)
-    print()
 
-    # Reproductor
-    repro = Reproductor()
-    print("Reproduciendo pista:")
-    repro.reproducir(p1)
-    print()
+def crear_pista_interactiva(biblioteca):
+    titulo = input("Título de la pista: ").strip()
+    artista = input("Artista: ").strip()
+    genero = pedir_genero()
+    duracion = pedir_duracion()
 
-    # Estadísticas
-    pistas = [p1, p2, p3]
-    mas_larga = Estadistica.pista_mas_larga(pistas)
-    print(f"Pista más larga: {mas_larga.info()}")
-    print()
+    if not Validador.titulo_valido(titulo):
+        print("Título inválido. No se ha creado la pista.")
+        return
+    if not Validador.artista_valido(artista):
+        print("Artista inválido. No se ha creado la pista.")
+        return
 
-    # Validador
-    print("Validaciones:")
-    print(f"Duración válida (185): {Validador.duracion_valida(185)}")
-    print(f"Título válido ('Numb'): {Validador.titulo_valido('Numb')}")
-    print(f"Género válido ('Rock'): {Validador.genero_valido('Rock')}")
-    print(f"Género válido ('Unknown'): {Validador.genero_valido('Unknown')}")
-    print()
+    nueva_pista = Pista(titulo, artista, genero, duracion)
+    biblioteca.agregar_pista(nueva_pista)
+    print(f"Pista creada: {nueva_pista}")
 
-    print("=== Fin de la prueba ===")
+
+def crear_playlist_interactiva(biblioteca):
+    nombre = input("Nombre de la playlist: ").strip()
+    estado = input("Estado de ánimo de la playlist: ").strip()
+    if not nombre:
+        print("El nombre de la playlist no puede estar vacío.")
+        return
+
+    nueva_playlist = Playlist(nombre, estado)
+    biblioteca.crear_playlist(nueva_playlist)
+    print(f"Playlist creada: {nueva_playlist}")
