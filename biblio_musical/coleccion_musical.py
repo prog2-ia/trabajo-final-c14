@@ -25,12 +25,12 @@ class ColeccionMusical(Contenido):
 
     def reproducir(self):
         """Reproduce todas las pistas."""
-        print(f" Reproduciendo colección: {self._nombre}")
+        print(f" Reproduciendo colección: {self.titulo}")
         for pista in self._pistas:
             pista.reproducir()
 
     def __str__(self):
-        return f"Colección: {self._nombre} ({len(self._pistas)} pistas)"
+        return f"Colección: {self.titulo} ({len(self._pistas)} pistas)"
 
     def __repr__(self):
-        return f"ColeccionMusical(titulo='{self._nombre}', pistas={len(self._pistas)})"
+        return f"ColeccionMusical(titulo='{self.titulo}', pistas={len(self._pistas)})"
