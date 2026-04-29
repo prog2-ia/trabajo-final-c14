@@ -136,3 +136,123 @@ def crear_playlist_interactiva(biblioteca):
     nueva_playlist = Playlist(nombre, estado)
     biblioteca.crear_playlist(nueva_playlist)
     print(f"Playlist creada: {nueva_playlist}")
+
+
+def agregar_pista_a_playlist(biblioteca):
+    if not biblioteca._pistas:
+        print("No hay pistas en la biblioteca para agregar.")
+        return
+    if not biblioteca._playlists:
+        print("No hay playlists en la biblioteca.")
+        return
+
+    listar_pistas(biblioteca)
+    indice_pista = input("Selecciona el número de la pista: ").strip()
+    listar_playlists(biblioteca)
+    indice_playlist = input("Selecciona el número de la playlist: ").strip()
+
+    try:
+        pista = biblioteca._pistas[int(indice_pista) - 1]
+        playlist = biblioteca._playlists[int(indice_playlist) - 1]
+    except (ValueError, IndexError):
+        print("Selección incorrecta. Intenta de nuevo.")
+        return
+
+    playlist.agregar_pista(pista)
+    print(f"Pista '{pista.titulo}' añadida a '{playlist.titulo}'.")
+
+
+def buscar_pistas(biblioteca):
+    criterio = input("Buscar por título, artista o género: ").strip().lower()
+    if not criterio:
+        print("Debes escribir algo para buscar.")
+        return
+
+    resultados = [p for p in biblioteca._pistas
+                  if criterio in p.titulo.lower()
+                  or criterio in p.artista.lower()
+                  or criterio in str(p.genero).lower()]
+
+    if not resultados:
+        print("No se han encontraron pistas con ese criterio.")
+        return
+
+    print("Resultados de tu búsqueda:")
+    for pista in resultados:
+        print(pista)
+
+
+def reproducir_pista(biblioteca):
+    if not biblioteca._pistas:
+        print("No hay pistas en la biblioteca.")
+        return
+    listar_pistas(biblioteca)
+    opcion = input("Selecciona el número de la pista que quieres reproducir: ").strip()
+    try:
+        pista = biblioteca._pistas[int(opcion) - 1]
+        pista.reproducir()
+    except (ValueError, IndexError):
+        print("Selección inválida.")
+
+
+def reproducir_playlist(biblioteca):
+    if not biblioteca._playlists:
+        print("No hay playlists en la biblioteca.")
+        return
+    listar_playlists(biblioteca)
+    opcion = input("Selecciona el número de la playlist que quieres reproducir: ").strip()
+    try:
+        playlist = biblioteca._playlists[int(opcion) - 1]
+        playlist.reproducir()
+    except (ValueError, IndexError):
+        print("Selección inválida.")
+
+
+def mostrar_estadisticas(biblioteca):
+    total_pistas = len(biblioteca._pistas)
+    total_playlists = len(biblioteca._playlists)
+    duracion_total = sum(p.duracion for p in biblioteca._pistas)
+    print("\nEstadísticas:")
+    print(f"- Pistas: {total_pistas}")
+    print(f"- Playlists: {total_playlists}")
+    print(f"- Duración total de todas las pistas: {duracion_total} segundos")
+
+
+def main():
+    biblioteca = Biblioteca()
+    crear_datos_ejemplo(biblioteca)
+
+    print("Bienvenido a la Biblioteca Musical.")
+    print("Menu:")
+
+    while True:
+        mostrar_menu()
+        opcion = input("Elige una opción: ").strip()
+
+        if opcion == "1":
+            listar_pistas(biblioteca)
+        elif opcion == "2":
+            listar_playlists(biblioteca)
+        elif opcion == "3":
+            crear_pista_interactiva(biblioteca)
+        elif opcion == "4":
+            crear_playlist_interactiva(biblioteca)
+        elif opcion == "5":
+            agregar_pista_a_playlist(biblioteca)
+        elif opcion == "6":
+            buscar_pistas(biblioteca)
+        elif opcion == "7":
+            reproducir_pista(biblioteca)
+        elif opcion == "8":
+            reproducir_playlist(biblioteca)
+        elif opcion == "9":
+            mostrar_estadisticas(biblioteca)
+        elif opcion == "0":
+            print("Gracias por usar la Biblioteca Musical")
+            break
+        else:
+            print("Esta opción no ves álida. Elige del 0 al 9.")
+
+
+if __name__ == "__main__":
+    main()
