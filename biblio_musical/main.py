@@ -45,7 +45,7 @@ def crear_datos_ejemplo(biblioteca):
 
 
 def mostrar_menu():
-    print("\n=== MENÚ - BIBLIOTECA MUSICAL ===")
+    print("\n=== MENÚ ===")
     print("1. Ver todas las pistas")
     print("2. Ver todas las playlists")
     print("3. Crear nueva pista")
@@ -222,8 +222,7 @@ def main():
     biblioteca = Biblioteca()
     crear_datos_ejemplo(biblioteca)
 
-    print("Bienvenido a la Biblioteca Musical.")
-    print("Menu:")
+    print("\nBienvenido a la Biblioteca Musical.")
 
     while True:
         mostrar_menu()
