@@ -1,4 +1,4 @@
-from coleccion_musical import ColeccionMusical
+from biblio_musical.contenido.coleccion_musical import ColeccionMusical
 
 class Album(ColeccionMusical):
     """Representa un álbum musical que contiene múltiples pistas."""

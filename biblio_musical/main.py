@@ -1,7 +1,7 @@
-from pista import Pista
+from biblio_musical.contenido.pista import Pista
 from playlist import Playlist
 from biblioteca import Biblioteca
-from genero import Genero
+from biblio_musical.contenido.genero import Genero
 from validador import Validador
 
 genero_referencias = [

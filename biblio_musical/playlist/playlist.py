@@ -1,4 +1,4 @@
-from coleccion_musical import ColeccionMusical
+from biblio_musical.contenido.coleccion_musical import ColeccionMusical
 from typing import List, Optional
 
 class Playlist(ColeccionMusical):

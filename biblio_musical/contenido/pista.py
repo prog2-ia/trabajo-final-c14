@@ -1,4 +1,4 @@
-from elemento_musical import ElementoMusical
+from biblio_musical.contenido.elemento_musical import ElementoMusical
 
 class Pista(ElementoMusical):
     """Representa una pista musical."""
