@@ -220,7 +220,10 @@ def mostrar_estadisticas(biblioteca):
 
 def main():
     biblioteca = Biblioteca()
-    crear_datos_ejemplo(biblioteca)
+    # si quito lo de csv porner: crear_datos_ejemplo(biblioteca) 
+    biblioteca.cargar_csv()
+    if not biblioteca._pistas and not biblioteca._playlists:
+        crear_datos_ejemplo(biblioteca)
 
     print("\nBienvenido a la Biblioteca Musical.")
 
@@ -247,6 +250,7 @@ def main():
         elif opcion == "9":
             mostrar_estadisticas(biblioteca)
         elif opcion == "0":
+            biblioteca.guardar_csv() # quitar esta linea si quito lo de csv
             print("Gracias por usar la Biblioteca Musical")
             break
         else:

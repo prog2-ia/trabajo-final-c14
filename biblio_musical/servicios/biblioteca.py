@@ -1,3 +1,5 @@
+from servicios.csv_manager import leer_csv, escribir_csv # quitar si no dejo lo de csv al final 
+
 class Biblioteca:
     """Gestiona todas las pistas y playlists del sistema."""
 
@@ -41,6 +43,73 @@ class Biblioteca:
                           if p._calidad and p._calidad.lower() == calidad.lower()]
 
         return resultados
+
+# quitar si no dejo de lo los csv
+    def guardar_pistas_csv(self):
+        """Guarda todas las pistas en datos/pistas.csv."""
+        filas = []
+        for pista in self._pistas:
+            filas.append({
+                "titulo": pista.titulo,
+                "artista": pista.artista,
+                "genero": str(pista.genero),
+                "duracion": pista.duracion,
+            })
+        escribir_csv("pistas.csv", filas, ["titulo", "artista", "genero", "duracion"])
+
+    def cargar_pistas_csv(self):
+        """Carga las pistas desde datos/pistas.csv."""
+        from contenido.genero import Genero
+        from contenido.pista import Pista
+
+        filas = leer_csv("pistas.csv")
+        self._pistas = []
+        for fila in filas:
+            if not fila.get("titulo") or not fila.get("artista"):
+                continue
+            genero = Genero(fila.get("genero", "Desconocido"))
+            duracion = int(fila.get("duracion", 0)) if fila.get("duracion") else 0
+            pista = Pista(fila["titulo"], fila["artista"], genero, duracion)
+            self._pistas.append(pista)
+
+    def guardar_playlists_csv(self):
+        """Guarda las playlists en datos/playlists.csv."""
+        filas = []
+        for playlist in self._playlists:
+            pistas_texto = "|".join(p.titulo for p in getattr(playlist, "_pistas", []))
+            filas.append({
+                "titulo": playlist.titulo,
+                "estado_animo": getattr(playlist, "estado_animo", ""),
+                "pistas": pistas_texto,
+            })
+        escribir_csv("playlists.csv", filas, ["titulo", "estado_animo", "pistas"])
+
+    def cargar_playlists_csv(self):
+        """Carga las playlists desde datos/playlists.csv."""
+        from playlist.playlist import Playlist
+
+        filas = leer_csv("playlists.csv")
+        self._playlists = []
+        pistas_por_titulo = {p.titulo: p for p in self._pistas}
+        for fila in filas:
+            if not fila.get("titulo"):
+                continue
+            playlist = Playlist(fila["titulo"], fila.get("estado_animo", ""))
+            for titulo_pista in fila.get("pistas", "").split("|"):
+                titulo_pista = titulo_pista.strip()
+                if titulo_pista and titulo_pista in pistas_por_titulo:
+                    playlist.agregar_pista(pistas_por_titulo[titulo_pista])
+            self._playlists.append(playlist)
+
+    def guardar_csv(self):
+        """Guarda pistas y playlists en CSV."""
+        self.guardar_pistas_csv()
+        self.guardar_playlists_csv()
+
+    def cargar_csv(self):
+        """Carga pistas y playlists desde CSV."""
+        self.cargar_pistas_csv()
+        self.cargar_playlists_csv()
 
 
     def __str__(self):
