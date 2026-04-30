@@ -1,5 +1,5 @@
 """ Representa cualquier cosa que sea música individual -> canciones """
-from contenido import Contenido  # Importamos la clase base Contenido
+from .contenido import Contenido  # Importamos la clase base Contenido
 
 class ElementoMusical(Contenido):
     def __init__(self, titulo, artista, genero, duracion):

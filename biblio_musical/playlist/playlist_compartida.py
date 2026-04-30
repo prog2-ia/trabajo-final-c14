@@ -1,10 +1,10 @@
-from playlist import Playlist  
+from .playlist import Playlist
 
 """ Clase que representa una playlist que puede ser editada por varios usuarios """
 class PlaylistCompartida(Playlist):
     def __init__(self, titulo, estado_animo):
         """ Inicializa la playlist compartida
-        # Llama al constructor de la clase base Playlist """
+         Llama al constructor de la clase base Playlist """
         super().__init__(titulo, estado_animo)
         self.colaboradores = []  # Lista de usuarios que pueden modificar la playlist
 

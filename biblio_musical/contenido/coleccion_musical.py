@@ -1,5 +1,5 @@
-from contenido import Contenido
-from biblio_musical.servicios.estadistica import Estadistica
+from .contenido import Contenido
+from servicios.estadistica import Estadistica
 
 class ColeccionMusical(Contenido):
     """Agrupa múltiples pistas musicales."""

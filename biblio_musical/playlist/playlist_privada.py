@@ -1,4 +1,4 @@
-from playlist import Playlist  
+from .playlist import Playlist
 
 """ Clase que representa una playlist privada, accesible solo para su propietario """
 class PlaylistPrivada(Playlist):

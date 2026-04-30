@@ -1,4 +1,4 @@
-from biblio_musical.usuarios.usuario import Usuario
+from usuarios.usuario import Usuario
 
 class UsuarioGratis(Usuario):
     """ Subclase de Usuario que representa una cuenta con limitaciones """

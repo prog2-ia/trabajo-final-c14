@@ -1,4 +1,4 @@
-from biblio_musical.usuarios.usuario import Usuario
+from usuarios.usuario import Usuario
 
 class UsuarioAdministrador(Usuario):
     """Subclase de Usuario que posee privilegios de gestión global  """

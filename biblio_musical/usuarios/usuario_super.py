@@ -1,5 +1,5 @@
-from biblio_musical.usuarios.usuario_administrador import UsuarioAdministrador
-from biblio_musical.usuarios.usuario_premium import UsuarioPremium
+from usuarios.usuario_administrador import UsuarioAdministrador
+from usuarios.usuario_premium import UsuarioPremium
 
 class UsuarioSuper(UsuarioAdministrador, UsuarioPremium):
     """Implementa herencia múltiple para combinar los privilegios de un Administrador y las ventajas de un Usuario Premium"""
