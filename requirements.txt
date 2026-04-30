@@ -1,0 +1,1 @@
+# por ahora no es necesaria la instalación de paquetes adicionales, pero se pueden agregar aquí si es necesario en el futuro.
