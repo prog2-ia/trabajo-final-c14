@@ -1,4 +1,4 @@
-from usuario import Usuario
+from biblio_musical.usuarios.usuario import Usuario
 
 class UsuarioPremium(Usuario):
     """ Subclase de Usuario que representa una cuenta con privilegios como la descarga de contenido para su uso sin conexión """
