@@ -40,3 +40,15 @@ class Pista(ElementoMusical):
 
     def __repr__(self):
         return f"Pista('{self.titulo}', '{self.artista}', '{self.genero}', {self.duracion})"
+    
+    def __add__(self, otro):
+        if isinstance(otro, (int, float)):
+            return Pista(self.titulo, self.artista, self.genero, self.duracion + otro, self._favorita)
+        if isinstance(otro, Pista):
+            # Sumamos las duraciones de ambas pistas
+            return Pista(self.titulo, self.artista, self.genero, self.duracion + otro.duracion, self._favorita)
+        return NotImplemented
+
+    def __radd__(self, otro):
+        """Permite la conmutatividad: 30 + pista"""
+        return self.__add__(otro)

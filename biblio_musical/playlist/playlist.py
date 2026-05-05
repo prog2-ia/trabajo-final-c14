@@ -65,3 +65,20 @@ class Playlist(ColeccionMusical):
 
     def __repr__(self) -> str:
         return f"Playlist(titulo='{self.titulo}', estado_animo='{self._estado_animo}')"
+    
+
+    def __add__(self, nueva_pista):
+        """Usa self.titulo y self._pistas (que viene de ColeccionMusical)"""
+        nueva_playlist = Playlist(self.titulo, self._estado_animo) # Nueva instancia
+        nueva_playlist._pistas = self._pistas.copy()
+        nueva_playlist._pistas.append(nueva_pista)
+        return nueva_playlist
+
+    def __iadd__(self, nueva_pista):
+        """Usa el atributo interno _pistas"""
+        self._pistas.append(nueva_pista) # Modifica la instancia actual
+        return self
+
+    def __getitem__(self, indice):
+        """Acceso por índice a la lista interna _pistas"""
+        return self._pistas[indice]
