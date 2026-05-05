@@ -79,6 +79,10 @@ class Playlist(ColeccionMusical):
         self._pistas.append(nueva_pista) # Modifica la instancia actual
         return self
 
+
     def __getitem__(self, indice):
         """Acceso por índice a la lista interna _pistas"""
-        return self._pistas[indice]
+        try:
+            return self._pistas[indice]
+        except IndexError:
+            raise IndexError(f"La pista en el índice {indice} no existe en esta playlist.")

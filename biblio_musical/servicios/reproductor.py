@@ -29,3 +29,17 @@ class Reproductor:
     def __rmul__(self, factor):
         """Permite hacer: 1.2 * reproductor[cite: 2]"""
         return self.__mul__(factor)
+    
+    def ajustar_volumen_seguro(self, nuevo_volumen):
+        """ Convertir y verificar el volumen """
+        try:
+            volumen_float = float(nuevo_volumen)
+            if volumen_float < 0 or volumen_float > 100:
+                raise ValueError("El volumen debe estar entre 0 y 100")
+        except ValueError as e:
+            print(f"Error al ajustar volumen: {e}")
+        else:
+            self.volumen = volumen_float
+            print(f"Volumen ajustado a {self.volumen}")
+        finally:
+            print(f"Estado actual del reproductor: {self.volumen}% de volumen")

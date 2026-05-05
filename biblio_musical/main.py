@@ -73,13 +73,14 @@ def pedir_genero():
 def pedir_duracion():
     while True:
         valor = input("Introduce la duración en segundos: ").strip()
-        if not valor.isdigit():
-            print("Introduce un número entero positivo.")
-            continue
-        duracion = int(valor)
-        if Validador.duracion_valida(duracion):
+        try:
+            duracion = int(valor)
+            if duracion <= 0:
+                raise ValueError("La duración debe ser mayor que 0.")
+        except ValueError as e:
+            print(f"Entrada inválida: {e}")
+        else:
             return duracion
-        print("La duración debe ser mayor que 0.")
 
 
 def listar_pistas(biblioteca):
@@ -109,22 +110,21 @@ def buscar_pista_por_titulo(biblioteca, titulo):
 
 
 def crear_pista_interactiva(biblioteca):
-    titulo = input("Título de la pista: ").strip()
-    artista = input("Artista: ").strip()
-    genero = pedir_genero()
-    duracion = pedir_duracion()
-
-    if not Validador.titulo_valido(titulo):
-        print("Título inválido. No se ha creado la pista.")
-        return
-    if not Validador.artista_valido(artista):
-        print("Artista inválido. No se ha creado la pista.")
-        return
-
-    nueva_pista = Pista(titulo, artista, genero, duracion)
-    biblioteca.agregar_pista(nueva_pista)
-    print(f"Pista creada: {nueva_pista}")
-
+    try:
+        titulo = input("Título de la pista: ").strip()
+        artista = input("Artista: ").strip()
+        assert len(titulo) > 0, "El título no puede estar vacío."
+        assert len(artista) > 0, "El artista no puede estar vacío."
+        genero = pedir_genero()
+        duracion = pedir_duracion()
+        nueva_pista = Pista(titulo, artista, genero, duracion)
+        biblioteca.agregar_pista(nueva_pista)
+    except AssertionError as error:
+        print(f"Error de validación: {error}")
+    except Exception as e:
+        print(f"No se pudo crear la pista: {e}")
+    else:
+        print(f"Pista creada con éxito: {nueva_pista}")
 
 def crear_playlist_interactiva(biblioteca):
     nombre = input("Nombre de la playlist: ").strip()

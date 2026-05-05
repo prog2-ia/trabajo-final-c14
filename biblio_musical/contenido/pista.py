@@ -4,9 +4,13 @@ class Pista(ElementoMusical):
     """Representa una pista musical."""
     total_pistas = 0
     def __init__(self, titulo, artista, genero, duracion, favorita=False):
+        assert isinstance(duracion, (int, float)),
+        if duracion <= 0:
+            raise ValueError("La duración de la pista debe ser mayor a 0")
         super().__init__(titulo, artista, genero, duracion)
         self._favorita = favorita
         Pista.total_pistas += 1
+
 
     @property
     def favorita(self):
