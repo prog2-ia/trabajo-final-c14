@@ -20,26 +20,47 @@ def crear_datos_ejemplo(biblioteca):
     rock = Genero("Rock")
     pop = Genero("Pop")
     jazz = Genero("Jazz")
+    reggaeton = Genero("Reggaeton")
+    trap = Genero("Trap")
+    indie = Genero("Indie")
 
     p1 = Pista("Blinding Lights", "The Weeknd", rock, 185)
     p2 = Pista("Levitating", "Dua Lipa", pop, 240)
     p3 = Pista("Good 4 U", "Olivia Rodrigo", pop, 200)
     p4 = Pista("Take Five", "Dave Brubeck", jazz, 330)
+    p5 = Pista("Espresso", "Sabrina Carpenter", pop, 175)
+    p6 = Pista("Gata Only", "FloyyMenor x Cris Mj", reggaeton, 222)
+    p7 = Pista("LUNCH", "Billie Eilish", indie, 180)
+    p8 = Pista("Si Antes Te Hubiera Conocido", "Karol G", reggaeton, 195)
+    p9 = Pista("Houdini", "Dua Lipa", pop, 185)
 
     biblioteca.agregar_pista(p1)
     biblioteca.agregar_pista(p2)
     biblioteca.agregar_pista(p3)
     biblioteca.agregar_pista(p4)
+    biblioteca.agregar_pista(p5)
+    biblioteca.agregar_pista(p6)
+    biblioteca.agregar_pista(p7)
+    biblioteca.agregar_pista(p8)
+    biblioteca.agregar_pista(p9)
 
     playlist1 = Playlist("Viaje", "Feliz")
     playlist1.agregar_pista(p1)
     playlist1.agregar_pista(p2)
+    playlist1.agregar_pista(p5)
+    playlist1.agregar_pista(p9)
     biblioteca.crear_playlist(playlist1)
 
     playlist2 = Playlist("Descanso", "Relajado")
     playlist2.agregar_pista(p3)
     playlist2.agregar_pista(p4)
     biblioteca.crear_playlist(playlist2)
+
+    playlist3 = Playlist("Fiesta", "Motivado")
+    playlist3.agregar_pista(p3) 
+    playlist3.agregar_pista(p6)
+    playlist3.agregar_pista(p8) 
+    biblioteca.crear_playlist(playlist3)
 
     return biblioteca
 
