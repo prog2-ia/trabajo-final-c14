@@ -1,10 +1,10 @@
-from contenido.elemento_musical import ElementoMusical
+from .elemento_musical import ElementoMusical
 
 class Pista(ElementoMusical):
     """Representa una pista musical."""
     total_pistas = 0
     def __init__(self, titulo, artista, genero, duracion, favorita=False):
-        assert isinstance(duracion, (int, float)),
+        assert isinstance(duracion, (int, float))
         if duracion <= 0:
             raise ValueError("La duración de la pista debe ser mayor a 0")
         super().__init__(titulo, artista, genero, duracion)
