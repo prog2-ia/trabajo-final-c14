@@ -4,7 +4,7 @@ from typing import List, Optional
 class Playlist(ColeccionMusical):
     """ Representa una colección específica de pistas musicales agrupadas bajo un título y un estado de ánimo común."""
 
-    def __init__(self, titulo: str, estado_animo: str):
+    def __init__(self, titulo: str, estado_animo: str) -> None:
         """
         Inicializa una nueva Playlist.
         
@@ -21,7 +21,7 @@ class Playlist(ColeccionMusical):
         return self._estado_animo
 
     @estado_animo.setter
-    def estado_animo(self, value: str):
+    def estado_animo(self, value: str) -> None:
         """Permite modificar la etiqueta de estado de ánimo."""
         self._estado_animo = value
 
@@ -39,7 +39,7 @@ class Playlist(ColeccionMusical):
                 resultado.append(p)
         return resultado
 
-    def buscar_pista(self, titulo) -> Optional[object]:
+    def buscar_pista(self, titulo: str) -> Optional[object]:
         """
         Busca una pista específica dentro de la colección por su título.
             
@@ -51,7 +51,7 @@ class Playlist(ColeccionMusical):
                 return p
         return None
 
-    def mostrar_playlist(self):
+    def mostrar_playlist(self) -> None:
         """
         Imprime el título de la playlist seguido de la información 
         detallada de cada pista contenida.

@@ -1,19 +1,21 @@
+from contenido.pista import Pista
+
 from .playlist import Playlist
 
 """ Clase que representa una playlist que puede ser editada por varios usuarios """
 class PlaylistCompartida(Playlist):
-    def __init__(self, titulo, estado_animo):
+    def __init__(self, titulo: str, estado_animo: str) -> None:
         """ Inicializa la playlist compartida
          Llama al constructor de la clase base Playlist """
         super().__init__(titulo, estado_animo)
-        self.colaboradores = []  # Lista de usuarios que pueden modificar la playlist
+        self.colaboradores: list[str] = []  # Lista de usuarios que pueden modificar la playlist
 
-    def agregar_colaborador(self, usuario):
+    def agregar_colaborador(self, usuario: str)-> None:
         """ Agrega un usuario a la lista de colaboradores si no está ya """
         if usuario not in self.colaboradores:
             self.colaboradores.append(usuario)
 
-    def agregar_pista(self, pista, usuario):
+    def agregar_pista(self, pista: "Pista", usuario: str) -> None:
         """ Permite agregar una pista solo si el usuario es colaborador """
         if usuario in self.colaboradores:
             self._pistas.append(pista)  # Se asume que _pistas viene de Playlist
@@ -22,10 +24,10 @@ class PlaylistCompartida(Playlist):
             # Mensaje de error si el usuario no tiene permiso
             print("No tienes permiso para modificar esta playlist.")
 
-    def __str__(self):
+    def __str__(self) -> str:
         """ Representación  de la playlist """
         return f"Playlist compartida: {self.titulo} (Estado de ánimo: {self.estado_animo}) (Colaboradores: {len(self.colaboradores)})"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """ Representación oficial del objeto, útil para depuración """
         return f"PlaylistCompartida(titulo='{self.titulo}', estado_animo='{self.estado_animo}', colaboradores={self.colaboradores})"
