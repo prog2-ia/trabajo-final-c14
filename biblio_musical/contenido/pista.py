@@ -1,6 +1,6 @@
 from .artista import Artista
 from .elemento_musical import ElementoMusical
-from .pista import Pista
+
 class Pista(ElementoMusical):
     """Representa una pista musical."""
     total_pistas = 0

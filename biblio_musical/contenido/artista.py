@@ -1,5 +1,3 @@
-from .album import Album
-
 class Artista:
     """Representa un artista musical con una colección de álbumes."""
 
@@ -7,7 +5,7 @@ class Artista:
         self.nombre = nombre
         self._albums = []
 
-    def agregar_album(self, album: Album) -> None:
+    def agregar_album(self, album) -> None:
         """Añade un album"""
         if album not in self._albums:
             self._albums.append(album)
@@ -16,7 +14,7 @@ class Artista:
         else:
             print(f"El album '{album.titulo}' ya esta en la coleccion.")
 
-    def buscar_album(self, titulo: str) -> "Album | None":
+    def buscar_album(self, titulo: str):
         for a in self._albums:
             if a.titulo == titulo:
                 return a
