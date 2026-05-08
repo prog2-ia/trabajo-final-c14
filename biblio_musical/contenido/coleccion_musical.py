@@ -1,35 +1,36 @@
 from .contenido import Contenido
 from servicios.estadistica import Estadistica
+from .pista import Pista
 
 class ColeccionMusical(Contenido):
     """Agrupa múltiples pistas musicales."""
 
-    def __init__(self, titulo):
+    def __init__(self, titulo: str) -> None:
         super().__init__(titulo)
         self._pistas = []
 
-    def agregar_pista(self, pista):
+    def agregar_pista(self, pista: Pista) -> None:
         """Añade una pista a la coleccion."""
         if pista not in self._pistas:
             self._pistas.append(pista)
         else:
             print("La pista ya se encuentra en la coleccion.")
 
-    def eliminar_pista(self, pista):
+    def eliminar_pista(self, pista : Pista) -> None:
         """Elimina una pista si existe en la lista."""
         try:
             self._pistas.remove(pista)
         except ValueError:
             print("La pista no existe en esta coleccion.")
 
-    def duracion_total(self):
+    def duracion_total(self) -> int:
         return Estadistica.duracion_total(self._pistas)
 
     @property
-    def total_pistas(self):
+    def total_pistas(self) -> int:
         return len(self._pistas)
 
-    def reproducir(self):
+    def reproducir(self) -> None:
         """Reproduce todas las pistas de la coleccion."""
         print(f"Reproduciendo coleccion: {self.titulo}")
         for pista in self._pistas:
@@ -37,7 +38,7 @@ class ColeccionMusical(Contenido):
             pista.reproducir()
 
     
-    def __len__(self):
+    def __len__(self) -> int:
         """Permite usar len(objeto_coleccion)."""
         return self.total_pistas
 
@@ -46,12 +47,12 @@ class ColeccionMusical(Contenido):
         for pista in self._pistas:
             yield pista
 
-    def __getitem__(self, indice):
+    def __getitem__(self, indice: int) -> Pista:
         """Permite acceder a pistas por indice: coleccion[0]."""
         return self._pistas[indice]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Colección: {self.titulo} ({len(self._pistas)} pistas)"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"ColeccionMusical(titulo='{self.titulo}', pistas={len(self._pistas)})"

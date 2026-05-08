@@ -1,9 +1,10 @@
+from .artista import Artista
 from .elemento_musical import ElementoMusical
-
+from .pista import Pista
 class Pista(ElementoMusical):
     """Representa una pista musical."""
     total_pistas = 0
-    def __init__(self, titulo, artista, genero, duracion, favorita=False):
+    def __init__(self, titulo: str, artista: "Artista", genero: str, duracion: int, favorita: bool=False):
         assert isinstance(duracion, (int, float))
         if duracion <= 0:
             raise ValueError("La duración de la pista debe ser mayor a 0")
@@ -13,25 +14,25 @@ class Pista(ElementoMusical):
 
 
     @property
-    def favorita(self):
+    def favorita(self) -> bool:
         return self._favorita
 
     @favorita.setter
-    def favorita(self, value):
+    def favorita(self, value: bool):
         self._favorita = value
 
-    def is_favorita(self):
+    def is_favorita(self) -> bool:
         return self._favorita
 
-    def marcar_favorita(self):
+    def marcar_favorita(self) -> None:
         """Marca la pista como favorita."""
         self._favorita = True
 
-    def quitar_favorita(self):
+    def quitar_favorita(self) -> None:
         """Quita la pista de favoritas."""
         self._favorita = False
 
-    def reproducir(self):
+    def reproducir(self) -> None:
         """Reproduce."""
         print(f" Reproduciendo: {self.titulo} - {self.artista}")
 
@@ -39,13 +40,13 @@ class Pista(ElementoMusical):
     def cantidad_pistas(cls):
         return cls.total_pistas
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Pista: {self.titulo} - {self.artista} ({self.duracion}s)"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Pista('{self.titulo}', '{self.artista}', '{self.genero}', {self.duracion})"
     
-    def __add__(self, otro):
+    def __add__(self, otro) -> "Pista":
         if isinstance(otro, (int, float)):
             return Pista(self.titulo, self.artista, self.genero, self.duracion + otro, self._favorita)
         if isinstance(otro, Pista):

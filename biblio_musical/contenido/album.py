@@ -1,52 +1,56 @@
-from contenido.coleccion_musical import ColeccionMusical
+from .coleccion_musical import ColeccionMusical
+from .pista import Pista   
+from .artista import Artista         
 
 class Album(ColeccionMusical):
     """Representa un álbum musical que contiene múltiples pistas."""
 
-    def __init__(self, titulo, artista, año):
+    def __init__(self, titulo: str, artista: "Artista", año: int) -> None:
         super().__init__(titulo)
-        self._artista = artista
-        self.año = año
+        self._artista: "Artista" = artista
+        self.año: int = año
 
-    def mostrar_album(self):
+    def mostrar_album(self) -> None:
         """Muestra la información resumida del álbum."""
-        duracion = self.obtener_duracion_total()
+        duracion: str = self.obtener_duracion_total()
         print(f"Album: {self.titulo} ({self.año}) - {self._artista.nombre}")
         print(f"Duracion total: {duracion}")
         print("-" * 30)
-        
+
         if not self._pistas:
             print("El album no tiene pistas registradas.")
         else:
-            for i, p in enumerate(self._pistas, 1):
-                print(f"{i}. {p.info()}")
+            pista: "Pista"
+            for i, pista in enumerate(self._pistas, 1):
+                print(f"{i}. {pista.info()}")
 
-    def obtener_duracion_total(self):
+    def obtener_duracion_total(self) -> str:
         """Calcula la duracion en formato MM:SS."""
-        total_segundos = sum(p.duracion for p in self._pistas)
-        minutos = total_segundos // 60
-        segundos = total_segundos % 60
+        total_segundos: int = sum(p.duracion for p in self._pistas)
+        minutos: int = total_segundos // 60
+        segundos: int = total_segundos % 60
         return f"{minutos}:{segundos:02d}"
 
-    def reproducir(self):
+    def reproducir(self) -> None:
         """Reproduce todas las pistas del álbum (polimorfismo)."""
         print(f"Reproduciendo album: {self.titulo}")
+        pista: "Pista"
         for pista in self._pistas:
             pista.reproducir()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Album: {self.titulo} - {self._artista.nombre} ({len(self._pistas)} pistas)"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}(titulo='{self.titulo}', artista='{self._artista.nombre}', pistas={len(self._pistas)})"
-    
-    def __lt__(self, otro):
+
+    def __lt__(self, otro: object) -> bool:
         """Ordena albumes por año."""
         if not isinstance(otro, Album):
             return NotImplemented
         return self.año < otro.año
 
-    def __eq__(self, otro):
+    def __eq__(self, otro: object) -> bool:
         """Comprueba si dos albumes son iguales por titulo y artista."""
         if not isinstance(otro, Album):
             return False
