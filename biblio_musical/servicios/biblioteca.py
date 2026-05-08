@@ -1,4 +1,4 @@
-from servicios.csv_manager import leer_csv, escribir_csv # quitar si no dejo lo de csv al final 
+from servicios.csv_manager import leer_csv, escribir_csv 
 
 class Biblioteca:
     """Gestiona todas las pistas y playlists del sistema."""
@@ -44,7 +44,6 @@ class Biblioteca:
 
         return resultados
 
-# quitar si no dejo de lo los csv
     def guardar_pistas_csv(self):
         """Guarda todas las pistas en datos/pistas.csv."""
         filas = []

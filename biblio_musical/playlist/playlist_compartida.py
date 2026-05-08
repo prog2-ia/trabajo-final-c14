@@ -1,5 +1,4 @@
 from contenido.pista import Pista
-
 from .playlist import Playlist
 
 """ Clase que representa una playlist que puede ser editada por varios usuarios """
