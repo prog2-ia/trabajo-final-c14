@@ -1,6 +1,7 @@
 from .playlist import Playlist
 
 class PlaylistPublica(Playlist):
+    
     """Hereda toda la estructura de Playlist y especializa la forma en que se visualiza el contenido """
 
     def mostrar_playlist(self) -> None:

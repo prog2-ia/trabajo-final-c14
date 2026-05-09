@@ -1,4 +1,5 @@
 class Reproductor:
+    
     """Se encarga de la interfaz de reproducción de audio """
 
     def __init__(self, volumen=50):

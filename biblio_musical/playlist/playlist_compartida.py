@@ -1,8 +1,10 @@
 from contenido.pista import Pista
 from .playlist import Playlist
 
-""" Clase que representa una playlist que puede ser editada por varios usuarios """
 class PlaylistCompartida(Playlist):
+
+    """ Clase que representa una playlist que puede ser editada por varios usuarios """
+
     def __init__(self, titulo: str, estado_animo: str) -> None:
         """ Inicializa la playlist compartida
          Llama al constructor de la clase base Playlist """

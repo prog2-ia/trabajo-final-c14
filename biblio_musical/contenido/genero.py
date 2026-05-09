@@ -1,5 +1,7 @@
-""" Representa un género musical, como Rock, Pop, Jazz... """
 class Genero:
+
+    """ Representa un género musical, como Rock, Pop, Jazz... """
+
     def __init__(self, nombre: str) -> None:
         """ Inicializa el género
             Si nombre es una cadena no vacía, se guarda con la primera letra en mayúscula

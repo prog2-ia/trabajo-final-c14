@@ -3,7 +3,7 @@ from usuarios.usuario import Usuario
 class UsuarioAdministrador(Usuario):
     """Subclase de Usuario que posee privilegios de gestión global  """
 
-    def eliminar_playlist(self, usuario: Usuario, playlist: object):
+    def eliminar_playlist(self, usuario: Usuario, playlist: object) -> None:
         """
         Elimina una playlist de la colección de otro usuario.
         
@@ -17,8 +17,8 @@ class UsuarioAdministrador(Usuario):
         else:
             print(f"La playlist no se encuentra en el perfil de {usuario.nombre}")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Usuario Administrador: {self.nombre}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"UsuarioAdministrador(nombre='{self.nombre}')"

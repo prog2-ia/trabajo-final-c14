@@ -3,7 +3,7 @@ from usuarios.usuario import Usuario
 class UsuarioPremium(Usuario):
     """ Subclase de Usuario que representa una cuenta con privilegios como la descarga de contenido para su uso sin conexión """
 
-    def __init__(self, nombre: str, email: str, edad: int, direccion: str):
+    def __init__(self, nombre: str, email: str, edad: int, direccion: str) -> None:
         """
         Inicializa un nuevo UsuarioPremium llamando al constructor de la clase base.
         

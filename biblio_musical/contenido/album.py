@@ -2,6 +2,7 @@ from .coleccion_musical import ColeccionMusical
 from .pista import Pista          
 
 class Album(ColeccionMusical):
+    
     """Representa un álbum musical que contiene múltiples pistas."""
 
     def __init__(self, titulo: str, artista: str, año: int) -> None:
@@ -11,7 +12,7 @@ class Album(ColeccionMusical):
 
     def mostrar_album(self) -> None:
         """Muestra la información resumida del álbum."""
-        duracion: str = self.obtener_duracion_total()
+        duracion = self.obtener_duracion_total()
         print(f"Album: {self.titulo} ({self.año}) - {self._artista}")
         print(f"Duracion total: {duracion}")
         print("-" * 30)
@@ -41,7 +42,7 @@ class Album(ColeccionMusical):
         return f"Album: {self.titulo} - {self._artista} ({len(self._pistas)} pistas)"
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(titulo='{self.titulo}', artista='{self._artista.nombre}', pistas={len(self._pistas)})"
+        return f"{self.__class__.__name__}(titulo='{self.titulo}', artista='{self._artista}', pistas={len(self._pistas)})"
 
     def __lt__(self, otro: object) -> bool:
         """Ordena albumes por año."""

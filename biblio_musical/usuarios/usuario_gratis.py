@@ -16,8 +16,8 @@ class UsuarioGratis(Usuario):
         else:
             super().crear_playlist(playlist)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Usuario Gratis: {self.nombre}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"UsuarioGratis(nombre='{self.nombre}')"

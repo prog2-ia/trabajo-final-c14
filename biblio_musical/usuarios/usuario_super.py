@@ -24,8 +24,8 @@ class UsuarioSuper(UsuarioAdministrador, UsuarioPremium):
         
         print(f"Usuario super {self.nombre} ha gestionado y descargado la playlist {playlist.titulo}")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Usuario Super: {self._nombre}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"UsuarioSuper(nombre='{self._nombre}')"

@@ -1,7 +1,9 @@
 from .playlist import Playlist
 
-""" Clase que representa una playlist privada, accesible solo para su propietario """
 class PlaylistPrivada(Playlist):
+
+    """ Clase que representa una playlist privada, accesible solo para su propietario """
+    
     def __init__(self, titulo: str, estado_animo: str, propietario: str) -> None:
         """ Inicializa la playlist privada
         # Llama al constructor de la clase base Playlist """

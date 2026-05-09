@@ -13,8 +13,10 @@ genero_referencias = [
     "Hip-Hop",
     "Reggae",
     "Blues",
+    "Reggaeton",
+    "Trap",
+    "Indie",
 ]
-
 
 def crear_datos_ejemplo(biblioteca):
     rock = Genero("Rock")
@@ -23,6 +25,7 @@ def crear_datos_ejemplo(biblioteca):
     reggaeton = Genero("Reggaeton")
     trap = Genero("Trap")
     indie = Genero("Indie")
+    
 
     p1 = Pista("Blinding Lights", "The Weeknd", rock, 185)
     p2 = Pista("Levitating", "Dua Lipa", pop, 240)
@@ -76,6 +79,8 @@ def mostrar_menu():
     print("7. Reproducir pista")
     print("8. Reproducir playlist")
     print("9. Estadísticas básicas")
+    print("10. Eliminar pista")
+    print("11. Eliminar playlist")
     print("0. Salir")
 
 
@@ -86,9 +91,13 @@ def pedir_genero():
 
     while True:
         texto = input("Introduce un género: ").strip().title()
-        if Validador.genero_valido(texto):
-            return Genero(texto)
-        print("Género no válido. Prueba otro de la lista.")
+        if not texto:
+            print("El género no puede estar vacío.")
+            continue
+        if texto not in genero_referencias:
+            genero_referencias.append(texto)   
+            print(f"Género '{texto}' añadido a la lista.")
+        return Genero(texto)
 
 
 def pedir_duracion():
@@ -140,6 +149,7 @@ def crear_pista_interactiva(biblioteca):
         duracion = pedir_duracion()
         nueva_pista = Pista(titulo, artista, genero, duracion)
         biblioteca.agregar_pista(nueva_pista)
+        biblioteca.guardar_csv()
     except AssertionError as error:
         print(f"Error de validación: {error}")
     except Exception as e:
@@ -156,7 +166,44 @@ def crear_playlist_interactiva(biblioteca):
 
     nueva_playlist = Playlist(nombre, estado)
     biblioteca.crear_playlist(nueva_playlist)
+    biblioteca.guardar_csv()
     print(f"Playlist creada: {nueva_playlist}")
+
+def eliminar_pista_interactiva(biblioteca):
+    if not biblioteca._pistas:
+        print("No hay pistas en la biblioteca.")
+        return
+    listar_pistas(biblioteca)
+    opcion = input("Selecciona el número de la pista a eliminar: ").strip()
+    try:
+        pista = biblioteca._pistas[int(opcion) - 1]
+    except (ValueError, IndexError):
+        raise ValueError("Selección inválida.")
+    confirmacion = input(f"¿Seguro que quieres eliminar '{pista.titulo}'? (s/n): ").strip().lower()
+    if confirmacion == "s":
+        biblioteca.eliminar_pista(pista)
+        biblioteca.guardar_csv()
+        print(f"Pista '{pista.titulo}' eliminada correctamente.")
+    else:
+        print("Operación cancelada.")
+
+def eliminar_playlist_interactiva(biblioteca):
+    if not biblioteca._playlists:
+        print("No hay playlists en la biblioteca.")
+        return
+    listar_playlists(biblioteca)
+    opcion = input("Selecciona el número de la playlist a eliminar: ").strip()
+    try:
+        playlist = biblioteca._playlists[int(opcion) - 1]
+    except (ValueError, IndexError):
+        raise ValueError("Selección inválida.")
+    confirmacion = input(f"¿Seguro que quieres eliminar '{playlist.titulo}'? (s/n): ").strip().lower()
+    if confirmacion == "s":
+        biblioteca.eliminar_playlist(playlist)
+        biblioteca.guardar_csv()
+        print(f"Playlist '{playlist.titulo}' eliminada correctamente.")
+    else:
+        print("Operación cancelada.")
 
 
 def agregar_pista_a_playlist(biblioteca):
@@ -241,10 +288,10 @@ def mostrar_estadisticas(biblioteca):
 
 def main():
     biblioteca = Biblioteca()
-    # si quito lo de csv porner: crear_datos_ejemplo(biblioteca) 
     biblioteca.cargar_csv()
     if not biblioteca._pistas and not biblioteca._playlists:
         crear_datos_ejemplo(biblioteca)
+        biblioteca.guardar_csv() 
 
     print("\nBienvenido a la Biblioteca Musical.")
 
@@ -270,8 +317,12 @@ def main():
             reproducir_playlist(biblioteca)
         elif opcion == "9":
             mostrar_estadisticas(biblioteca)
+        elif opcion == "10":
+            eliminar_pista_interactiva(biblioteca)
+        elif opcion == "11":
+            eliminar_playlist_interactiva(biblioteca)
         elif opcion == "0":
-            biblioteca.guardar_csv() # quitar esta linea si quito lo de csv
+            biblioteca.guardar_csv() 
             print("Gracias por usar la Biblioteca Musical")
             break
         else:

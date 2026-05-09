@@ -2,7 +2,9 @@ from .artista import Artista
 from .elemento_musical import ElementoMusical
 
 class Pista(ElementoMusical):
+
     """Representa una pista musical."""
+    
     total_pistas = 0
     def __init__(self, titulo: str, artista: "Artista", genero: str, duracion: int, favorita: bool=False):
         assert isinstance(duracion, (int, float))

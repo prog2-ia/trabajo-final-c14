@@ -1,5 +1,6 @@
-"""  Esta clase ofrece métodos estáticos para analizar listas de pistas musicales """
 class Estadistica:
+
+    """  Esta clase ofrece métodos estáticos para analizar listas de pistas musicales """
 
     @staticmethod
     def pista_mas_larga(lista_pistas):

@@ -1,4 +1,5 @@
 class Artista:
+    
     """Representa un artista musical con una colección de álbumes."""
 
     def __init__(self, nombre: str) -> None:

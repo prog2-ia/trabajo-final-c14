@@ -3,6 +3,7 @@ from servicios.estadistica import Estadistica
 from .pista import Pista
 
 class ColeccionMusical(Contenido):
+    
     """Agrupa múltiples pistas musicales."""
 
     def __init__(self, titulo: str) -> None:

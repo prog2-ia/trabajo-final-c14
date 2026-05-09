@@ -20,9 +20,5 @@ class Validador:
 
     @staticmethod
     def genero_valido(genero: str) -> bool:
-        """ Determina si el género pertenece a la lista de géneros musicales permitidos. """
-        generos_validos = [
-            "Rock", "Pop", "Jazz", "Clásica", 
-            "Electrónica", "Hip-Hop", "Reggae", "Blues"
-        ]
-        return genero in generos_validos
+        """ Acepta cualquier género no vacío. """
+        return isinstance(genero, str) and len(genero.strip()) > 0
