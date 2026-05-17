@@ -3,6 +3,10 @@ from playlist.playlist import Playlist
 from servicios.biblioteca import Biblioteca
 from contenido.genero import Genero
 from servicios.validador import Validador
+from usuarios.usuario_gratis import UsuarioGratis
+from usuarios.usuario_premium import UsuarioPremium
+from usuarios.usuario_administrador import UsuarioAdministrador
+from usuarios.usuario_super import UsuarioSuper
 
 genero_referencias = [
     "Rock",
@@ -294,6 +298,18 @@ def main():
         biblioteca.guardar_csv() 
 
     print("\nBienvenido a la Biblioteca Musical.")
+
+    gratis = UsuarioGratis("Ana", "ana@gmail.com", 20, "Madrid")
+    premium = UsuarioPremium("Luis", "luis@gmail.com", 25, "Barcelona")
+    admin = UsuarioAdministrador("Carlos", "admin@gmail.com", 30, "Valencia")
+    super_usuario = UsuarioSuper("Sergio", "super@gmail.com", 35, "Sevilla")
+
+    usuarios = [gratis, premium, admin, super_usuario]
+
+    print("\n=== TIPOS DE CUENTA ===")
+
+    for usuario in usuarios:
+        print(f"{usuario.nombre}: {usuario.tipo_cuenta()}")
 
     while True:
         mostrar_menu()
