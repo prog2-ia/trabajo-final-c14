@@ -14,6 +14,22 @@ class UsuarioPremium(Usuario):
             direccion: Domicilio de facturación o residencia.
         """
         super().__init__(nombre, email, edad, direccion)
+        self._favoritos = []
+
+
+    def agregar_a_favoritos(self, cancion):
+        if cancion not in self._favoritos:
+            self._favoritos.append(cancion)
+
+    def mostrar_favoritos(self):
+        for c in self._favoritos:
+            print(c.titulo)
+
+    def escuchar_sin_anuncios(self):
+        print("Reproduciendo música sin anuncios en calidad HD")
+    
+    def tipo_cuenta(self):
+        return "Cuenta premium"
 
     def descargar_playlist(self, playlist):
         """

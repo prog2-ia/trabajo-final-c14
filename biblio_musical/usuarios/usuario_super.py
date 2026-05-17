@@ -24,6 +24,23 @@ class UsuarioSuper(UsuarioAdministrador, UsuarioPremium):
         
         print(f"Usuario super {self.nombre} ha gestionado y descargado la playlist {playlist.titulo}")
 
+    def verificar_usuario(self, usuario):
+        usuario.verificado = True
+        print(f"{usuario.nombre} ahora es un usuario verificado")
+
+    def transferir_playlist(self, origen, destino, playlist):
+        if playlist in origen._playlists:
+            origen._playlists.remove(playlist)
+            destino._playlists.append(playlist)
+            print("Playlist transferida correctamente")
+
+    def acceso_total(self):
+        print("Acceso total al sistema habilitado")
+
+    def tipo_cuenta(self):
+        return "Cuenta super"
+
+
     def __str__(self) -> str:
         return f"Usuario Super: {self._nombre}"
 
