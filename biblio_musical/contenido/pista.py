@@ -11,6 +11,7 @@ class Pista(ElementoMusical):
         if duracion <= 0:
             raise ValueError("La duración de la pista debe ser mayor a 0")
         super().__init__(titulo, artista, genero, duracion)
+        self._reproducciones = 0
         self._favorita = favorita
         Pista.total_pistas += 1
 
@@ -59,3 +60,10 @@ class Pista(ElementoMusical):
     def __radd__(self, otro):
         """Permite la conmutatividad: 30 + pista"""
         return self.__add__(otro)
+    
+    @property
+    def reproducciones(self) -> int:
+        return self._reproducciones
+
+    def reiniciar_reproducciones(self) -> None:
+        self._reproducciones = 0
