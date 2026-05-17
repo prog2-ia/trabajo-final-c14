@@ -132,3 +132,10 @@ class Biblioteca:
 
     def __repr__(self):
         return f"Biblioteca(pistas={len(self._pistas)}, playlists={len(self._playlists)})"
+    
+    def obtener_playlists(self) -> list[Playlist]:
+        return self._playlists.copy()
+    
+    def buscar_por_titulo(self, titulo: str) -> list[Pista]:
+        titulo = titulo.lower().strip()
+        return [p for p in self._pistas if titulo in p.titulo.lower()]
