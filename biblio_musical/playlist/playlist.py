@@ -86,3 +86,7 @@ class Playlist(ColeccionMusical):
             return self._pistas[indice]
         except IndexError:
             raise IndexError(f"La pista en el índice {indice} no existe en esta playlist.")
+        
+
+    def __iter__(self) -> Iterator:
+        return iter(self._pistas)
