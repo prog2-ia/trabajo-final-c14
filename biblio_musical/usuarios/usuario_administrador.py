@@ -27,6 +27,9 @@ class UsuarioAdministrador(Usuario):
     def eliminar_todas_playlists(self, usuario):
         usuario._playlists.clear()
 
+    def tipo_cuenta(self): 
+        return "Cuenta administrador"
+
     def __str__(self) -> str:
         return f"Usuario Administrador: {self.nombre}"
 

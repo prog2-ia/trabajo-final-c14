@@ -1,5 +1,5 @@
 from contenido.coleccion_musical import ColeccionMusical
-from typing import List, Optional
+from typing import List, Optional, Iterator
 
 class Playlist(ColeccionMusical):
     """ Representa una colección específica de pistas musicales agrupadas bajo un título y un estado de ánimo común."""

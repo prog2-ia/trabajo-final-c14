@@ -31,6 +31,9 @@ class UsuarioGratis(Usuario):
         else:
             super().crear_playlist(playlist)
 
+    def tipo_cuenta(self): 
+        return "Cuenta Gratis"
+
     def __str__(self) -> str:
         return f"Usuario Gratis: {self.nombre}"
 
