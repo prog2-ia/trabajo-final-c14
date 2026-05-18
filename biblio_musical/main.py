@@ -1,348 +1,445 @@
+import os
 from contenido.pista import Pista
+from contenido.genero import Genero
 from playlist.playlist import Playlist
 from servicios.biblioteca import Biblioteca
-from contenido.genero import Genero
-from servicios.validador import Validador
-from usuarios.usuario_gratis import UsuarioGratis
+from servicios.gestor_usuarios import GestorUsuarios, TIPOS_USUARIO
 from usuarios.usuario_premium import UsuarioPremium
 from usuarios.usuario_administrador import UsuarioAdministrador
 from usuarios.usuario_super import UsuarioSuper
 
-genero_referencias = [
-    "Rock",
-    "Pop",
-    "Jazz",
-    "Clásica",
-    "Electrónica",
-    "Hip-Hop",
-    "Reggae",
-    "Blues",
-    "Reggaeton",
-    "Trap",
-    "Indie",
+CARPETA_DATOS = os.path.abspath(os.path.join(os.path.dirname(__file__), "datos"))
+
+GENEROS_DISPONIBLES = [
+    "Rock", "Pop", "Jazz", "Clásica", "Electrónica",
+    "Hip-Hop", "Reggae", "Blues", "Reggaeton", "Trap", "Indie",
 ]
 
+# datos de ejemplos
 def crear_datos_ejemplo(biblioteca):
-    rock = Genero("Rock")
+    rock = Genero("Rock") 
     pop = Genero("Pop")
     jazz = Genero("Jazz")
     reggaeton = Genero("Reggaeton")
-    trap = Genero("Trap")
     indie = Genero("Indie")
-    
 
-    p1 = Pista("Blinding Lights", "The Weeknd", rock, 185)
-    p2 = Pista("Levitating", "Dua Lipa", pop, 240)
-    p3 = Pista("Good 4 U", "Olivia Rodrigo", pop, 200)
-    p4 = Pista("Take Five", "Dave Brubeck", jazz, 330)
-    p5 = Pista("Espresso", "Sabrina Carpenter", pop, 175)
-    p6 = Pista("Gata Only", "FloyyMenor x Cris Mj", reggaeton, 222)
-    p7 = Pista("LUNCH", "Billie Eilish", indie, 180)
+    p1 = Pista("Blinding Lights","The Weeknd",rock,185)
+    p2 = Pista("Levitating","Dua Lipa",pop,240)
+    p3 = Pista("Good 4 U","Olivia Rodrigo",pop,200)
+    p4 = Pista("Take Five","Dave Brubeck",jazz,330)
+    p5 = Pista("Espresso","Sabrina Carpenter",pop,175)
+    p6 = Pista("Gata Only","FloyyMenor x Cris Mj", reggaeton, 222)
+    p7 = Pista("LUNCH","Billie Eilish",indie,180)
     p8 = Pista("Si Antes Te Hubiera Conocido", "Karol G", reggaeton, 195)
-    p9 = Pista("Houdini", "Dua Lipa", pop, 185)
+    p9 = Pista("Houdini", "Dua Lipa",pop,185)
 
-    biblioteca.agregar_pista(p1)
-    biblioteca.agregar_pista(p2)
-    biblioteca.agregar_pista(p3)
-    biblioteca.agregar_pista(p4)
-    biblioteca.agregar_pista(p5)
-    biblioteca.agregar_pista(p6)
-    biblioteca.agregar_pista(p7)
-    biblioteca.agregar_pista(p8)
-    biblioteca.agregar_pista(p9)
+    for p in [p1, p2, p3, p4, p5, p6, p7, p8, p9]:
+        biblioteca.agregar_pista(p)
 
-    playlist1 = Playlist("Viaje", "Feliz")
-    playlist1.agregar_pista(p1)
-    playlist1.agregar_pista(p2)
-    playlist1.agregar_pista(p5)
-    playlist1.agregar_pista(p9)
-    biblioteca.crear_playlist(playlist1)
+    pl1 = Playlist("Viaje", "Feliz")
+    pl1.agregar_pista(p1); pl1.agregar_pista(p2)
+    pl1.agregar_pista(p5); pl1.agregar_pista(p9)
 
-    playlist2 = Playlist("Descanso", "Relajado")
-    playlist2.agregar_pista(p3)
-    playlist2.agregar_pista(p4)
-    biblioteca.crear_playlist(playlist2)
+    pl2 = Playlist("Descanso", "Relajado")
+    pl2.agregar_pista(p3); pl2.agregar_pista(p4)
 
-    playlist3 = Playlist("Fiesta", "Motivado")
-    playlist3.agregar_pista(p3) 
-    playlist3.agregar_pista(p6)
-    playlist3.agregar_pista(p8) 
-    biblioteca.crear_playlist(playlist3)
+    pl3 = Playlist("Fiesta", "Motivado")
+    pl3.agregar_pista(p3); pl3.agregar_pista(p6); pl3.agregar_pista(p8)
 
-    return biblioteca
+    biblioteca.crear_playlist(pl1)
+    biblioteca.crear_playlist(pl2)
+    biblioteca.crear_playlist(pl3)
 
 
-def mostrar_menu():
-    print("\n=== MENÚ ===")
-    print("1. Ver todas las pistas")
-    print("2. Ver todas las playlists")
-    print("3. Crear nueva pista")
-    print("4. Crear nueva playlist")
-    print("5. Agregar pista a playlist")
-    print("6. Buscar pistas")
-    print("7. Reproducir pista")
-    print("8. Reproducir playlist")
-    print("9. Estadísticas básicas")
-    print("10. Eliminar pista")
-    print("11. Eliminar playlist")
-    print("0. Salir")
+def crear_usuarios_ejemplo(gestor):
+    gestor.agregar(gestor.crear_usuario("Ana",    "ana@gmail.com",   20, "Madrid",    "gratis"))
+    gestor.agregar(gestor.crear_usuario("Luis",   "luis@gmail.com",  25, "Barcelona", "premium"))
+    gestor.agregar(gestor.crear_usuario("Carlos", "admin@gmail.com", 30, "Valencia",  "administrador"))
+    gestor.agregar(gestor.crear_usuario("Sergio", "super@gmail.com", 35, "Sevilla",   "super"))
+    gestor.guardar()
+    print("Usuarios de ejemplo creados.")
 
-
+# funciones de entrada
 def pedir_genero():
     print("Géneros disponibles:")
-    for genero in genero_referencias:
-        print(f" - {genero}")
-
+    for g in GENEROS_DISPONIBLES:
+        print(f"  - {g}")
     while True:
-        texto = input("Introduce un género: ").strip().title()
+        texto = input("Género: ").strip().title()
         if not texto:
-            print("El género no puede estar vacío.")
+            print("No puede estar vacío.")
             continue
-        if texto not in genero_referencias:
-            genero_referencias.append(texto)   
-            print(f"Género '{texto}' añadido a la lista.")
+        if texto not in GENEROS_DISPONIBLES:
+            GENEROS_DISPONIBLES.append(texto)
+            print(f"Género '{texto}' añadido.")
         return Genero(texto)
 
 
 def pedir_duracion():
     while True:
-        valor = input("Introduce la duración en segundos: ").strip()
         try:
-            duracion = int(valor)
-            if duracion <= 0:
-                raise ValueError("La duración debe ser mayor que 0.")
-        except ValueError as e:
-            print(f"Entrada inválida: {e}")
+            d = int(input("Duración en segundos: ").strip())
+            if d > 0:
+                return d
+            print("Debe ser mayor que 0.")
+        except ValueError:
+            print("Introduce un número entero.")
+
+
+def pedir_indice(lista, mensaje):
+    """Pide un número por consola y devuelve el elemento de la lista, o None."""
+    try:
+        return lista[int(input(mensaje).strip()) - 1]
+    except (ValueError, IndexError):
+        print("Selección inválida.")
+        return None
+
+# pantalla de login
+def pantalla_login(gestor):
+    """Muestra el menú de login y devuelve el usuario activo, o None para salir."""
+    while True:
+        print("\n╔══════════════════════════════╗")
+        print("║     BIBLIOTECA MUSICAL       ║")
+        print("╠══════════════════════════════╣")
+        print("║  1. Iniciar sesión           ║")
+        print("║  2. Crear nuevo usuario      ║")
+        print("║  0. Salir                    ║")
+        print("╚══════════════════════════════╝")
+        op = input("Elige una opción: ").strip()
+
+        if op == "0":
+            return None
+
+        elif op == "1":
+            if not gestor._usuarios:
+                print("No hay usuarios. Crea uno primero.")
+                continue
+            print("\nUsuarios disponibles:")
+            for i, u in enumerate(gestor._usuarios, 1):
+                print(f"  {i}. {u.nombre}  [{u.tipo_cuenta()}]")
+            u = pedir_indice(gestor._usuarios, "Número de usuario: ")
+            if u:
+                print(f"\n¡Bienvenido/a, {u.nombre}! [{u.tipo_cuenta()}]")
+                return u
+
+        elif op == "2":
+            u = formulario_nuevo_usuario(gestor)
+            if u:
+                gestor.agregar(u)
+                gestor.guardar()
+                print(f"Usuario '{u.nombre}' creado. ¡Bienvenido/a!")
+                return u
         else:
-            return duracion
+            print("Opción no válida.")
 
 
+def formulario_nuevo_usuario(gestor):
+    """Pide los datos por consola y devuelve el nuevo usuario, o None si hay error."""
+    print("\n--- Crear nuevo usuario ---")
+    nombre = input("Nombre: ").strip()
+    if not nombre:
+        print("El nombre no puede estar vacío.")
+        return None
+    if gestor.existe(nombre):
+        print(f"Ya existe un usuario llamado '{nombre}'.")
+        return None
+
+    email     = input("Email: ").strip()
+    direccion = input("Dirección: ").strip()
+
+    while True:
+        try:
+            edad = int(input("Edad: ").strip())
+            if edad > 0:
+                break
+            print("La edad debe ser positiva.")
+        except ValueError:
+            print("Introduce un número entero.")
+
+    print("\nTipos de cuenta disponibles:")
+    tipos = list(TIPOS_USUARIO.keys())
+    for i, t in enumerate(tipos, 1):
+        print(f"  {i}. {t.capitalize()}")
+    while True:
+        try:
+            tipo = tipos[int(input("Elige tipo: ").strip()) - 1]
+            break
+        except (ValueError, IndexError):
+            print("Opción no válida.")
+
+    return gestor.crear_usuario(nombre, email, edad, direccion, tipo)
+
+# menu principal
+def mostrar_menu(usuario):
+    es_premium = isinstance(usuario, (UsuarioPremium, UsuarioSuper))
+    es_admin   = isinstance(usuario, (UsuarioAdministrador, UsuarioSuper))
+
+    print(f"\n=== MENÚ  [{usuario.nombre} · {usuario.tipo_cuenta()}] ===")
+    print("=== Catálogo global ===")
+    print("1.  Ver todas las pistas")
+    print("2.  Buscar pistas")
+    print("3.  Añadir pista al catálogo")
+    print("4.  Reproducir una pista")
+    print("=== Mis playlists ===")
+    print("5.  Ver mis playlists")
+    print("6.  Crear playlist")
+    print("7.  Añadir pista a una playlist mía")
+    print("8.  Reproducir una playlist mía")
+    print("9.  Eliminar una playlist mía")
+    if es_premium:
+        print("=== Premium ===")
+        print("10. Ver mis favoritos")
+        print("11. Añadir pista a favoritos")
+    if es_admin:
+        print("=== Administración ===")
+        print("12. Ver todos los usuarios")
+        print("13. Eliminar pista del catálogo")
+    print("======================================")
+    print("14. Estadísticas")
+    print("15. Cambiar de usuario")
+    print("0.  Salir")
+
+# acciones
 def listar_pistas(biblioteca):
     if not biblioteca._pistas:
-        print("No hay pistas en la biblioteca.")
+        print("No hay pistas en el catálogo.")
         return
-    print("\nPistas disponibles:")
-    for idx, pista in enumerate(biblioteca._pistas, start=1):
-        print(f"{idx}. {pista}")
-
-
-def listar_playlists(biblioteca):
-    if not biblioteca._playlists:
-        print("No hay playlists en la biblioteca.")
-        return
-    print("\nPlaylists disponibles:")
-    for idx, playlist in enumerate(biblioteca._playlists, start=1):
-        print(f"{idx}. {playlist}")
-
-
-def buscar_pista_por_titulo(biblioteca, titulo):
-    titulo = titulo.strip().lower()
-    for pista in biblioteca._pistas:
-        if pista.titulo.strip().lower() == titulo:
-            return pista
-    return None
-
-
-def crear_pista_interactiva(biblioteca):
-    try:
-        titulo = input("Título de la pista: ").strip()
-        artista = input("Artista: ").strip()
-        assert len(titulo) > 0, "El título no puede estar vacío."
-        assert len(artista) > 0, "El artista no puede estar vacío."
-        genero = pedir_genero()
-        duracion = pedir_duracion()
-        nueva_pista = Pista(titulo, artista, genero, duracion)
-        biblioteca.agregar_pista(nueva_pista)
-        biblioteca.guardar_csv()
-    except AssertionError as error:
-        print(f"Error de validación: {error}")
-    except Exception as e:
-        print(f"No se pudo crear la pista: {e}")
-    else:
-        print(f"Pista creada con éxito: {nueva_pista}")
-
-def crear_playlist_interactiva(biblioteca):
-    nombre = input("Nombre de la playlist: ").strip()
-    estado = input("Estado de ánimo de la playlist: ").strip()
-    if not nombre:
-        print("El nombre de la playlist no puede estar vacío.")
-        return
-
-    nueva_playlist = Playlist(nombre, estado)
-    biblioteca.crear_playlist(nueva_playlist)
-    biblioteca.guardar_csv()
-    print(f"Playlist creada: {nueva_playlist}")
-
-def eliminar_pista_interactiva(biblioteca):
-    if not biblioteca._pistas:
-        print("No hay pistas en la biblioteca.")
-        return
-    listar_pistas(biblioteca)
-    opcion = input("Selecciona el número de la pista a eliminar: ").strip()
-    try:
-        pista = biblioteca._pistas[int(opcion) - 1]
-    except (ValueError, IndexError):
-        raise ValueError("Selección inválida.")
-    confirmacion = input(f"¿Seguro que quieres eliminar '{pista.titulo}'? (s/n): ").strip().lower()
-    if confirmacion == "s":
-        biblioteca.eliminar_pista(pista)
-        biblioteca.guardar_csv()
-        print(f"Pista '{pista.titulo}' eliminada correctamente.")
-    else:
-        print("Operación cancelada.")
-
-def eliminar_playlist_interactiva(biblioteca):
-    if not biblioteca._playlists:
-        print("No hay playlists en la biblioteca.")
-        return
-    listar_playlists(biblioteca)
-    opcion = input("Selecciona el número de la playlist a eliminar: ").strip()
-    try:
-        playlist = biblioteca._playlists[int(opcion) - 1]
-    except (ValueError, IndexError):
-        raise ValueError("Selección inválida.")
-    confirmacion = input(f"¿Seguro que quieres eliminar '{playlist.titulo}'? (s/n): ").strip().lower()
-    if confirmacion == "s":
-        biblioteca.eliminar_playlist(playlist)
-        biblioteca.guardar_csv()
-        print(f"Playlist '{playlist.titulo}' eliminada correctamente.")
-    else:
-        print("Operación cancelada.")
-
-
-def agregar_pista_a_playlist(biblioteca):
-    if not biblioteca._pistas:
-        print("No hay pistas en la biblioteca para agregar.")
-        return
-    if not biblioteca._playlists:
-        print("No hay playlists en la biblioteca.")
-        return
-
-    listar_pistas(biblioteca)
-    indice_pista = input("Selecciona el número de la pista: ").strip()
-    listar_playlists(biblioteca)
-    indice_playlist = input("Selecciona el número de la playlist: ").strip()
-
-    try:
-        pista = biblioteca._pistas[int(indice_pista) - 1]
-        playlist = biblioteca._playlists[int(indice_playlist) - 1]
-    except (ValueError, IndexError):
-        print("Selección incorrecta. Intenta de nuevo.")
-        return
-
-    playlist.agregar_pista(pista)
-    print(f"Pista '{pista.titulo}' añadida a '{playlist.titulo}'.")
+    print("\nPistas en el catálogo:")
+    for i, p in enumerate(biblioteca._pistas, 1):
+        print(f"  {i}. {p}")
 
 
 def buscar_pistas(biblioteca):
-    criterio = input("Buscar por título, artista o género: ").strip().lower()
+    criterio = input("Buscar (título / artista / género): ").strip().lower()
     if not criterio:
-        print("Debes escribir algo para buscar.")
+        print("Escribe algo para buscar.")
         return
-
-    resultados = [p for p in biblioteca._pistas
-                  if criterio in p.titulo.lower()
-                  or criterio in p.artista.lower()
-                  or criterio in str(p.genero).lower()]
-
+    resultados = []
+    for p in biblioteca._pistas:
+        if criterio in p.titulo.lower() or criterio in p.artista.lower() or criterio in str(p.genero).lower():
+            resultados.append(p)
     if not resultados:
-        print("No se han encontraron pistas con ese criterio.")
-        return
+        print("Sin resultados.")
+    else:
+        for p in resultados:
+            print(f"  {p}")
 
-    print("Resultados de tu búsqueda:")
-    for pista in resultados:
-        print(pista)
+
+def anadir_pista_catalogo(biblioteca):
+    try:
+        titulo  = input("Título: ").strip()
+        artista = input("Artista: ").strip()
+        assert titulo,  "El título no puede estar vacío."
+        assert artista, "El artista no puede estar vacío."
+        nueva = Pista(titulo, artista, pedir_genero(), pedir_duracion())
+        biblioteca.agregar_pista(nueva)
+        biblioteca.guardar_csv()
+        print(f"Pista '{titulo}' añadida al catálogo.")
+    except AssertionError as e:
+        print(f"Error: {e}")
 
 
 def reproducir_pista(biblioteca):
     if not biblioteca._pistas:
-        print("No hay pistas en la biblioteca.")
+        print("No hay pistas.")
         return
     listar_pistas(biblioteca)
-    opcion = input("Selecciona el número de la pista que quieres reproducir: ").strip()
-    try:
-        pista = biblioteca._pistas[int(opcion) - 1]
-        pista.reproducir()
-    except (ValueError, IndexError):
-        print("Selección inválida.")
+    p = pedir_indice(biblioteca._pistas, "Número de pista: ")
+    if p:
+        p.reproducir()
 
 
-def reproducir_playlist(biblioteca):
-    if not biblioteca._playlists:
-        print("No hay playlists en la biblioteca.")
+def listar_mis_playlists(usuario):
+    if not usuario._playlists:
+        print("No tienes playlists.")
         return
-    listar_playlists(biblioteca)
-    opcion = input("Selecciona el número de la playlist que quieres reproducir: ").strip()
+    print(f"\nPlaylists de {usuario.nombre}:")
+    for i, pl in enumerate(usuario._playlists, 1):
+        print(f"  {i}. {pl}")
+
+
+def crear_playlist(usuario, gestor, biblioteca):
+    nombre = input("Nombre de la playlist: ").strip()
+    estado = input("Estado de ánimo: ").strip()
+    if not nombre:
+        print("El nombre no puede estar vacío.")
+        return
     try:
-        playlist = biblioteca._playlists[int(opcion) - 1]
-        playlist.reproducir()
-    except (ValueError, IndexError):
-        print("Selección inválida.")
+        pl = Playlist(nombre, estado)
+        usuario.crear_playlist(pl)   # UsuarioGratis aplica su límite aquí
+        gestor.guardar_playlists_usuario(usuario)
+        print(f"Playlist '{nombre}' creada.")
+    except ValueError as e:
+        print(f"No se pudo crear: {e}")
 
 
-def mostrar_estadisticas(biblioteca):
-    total_pistas = len(biblioteca._pistas)
-    total_playlists = len(biblioteca._playlists)
-    duracion_total = sum(p.duracion for p in biblioteca._pistas)
-    print("\nEstadísticas:")
-    print(f"- Pistas: {total_pistas}")
-    print(f"- Playlists: {total_playlists}")
-    print(f"- Duración total de todas las pistas: {duracion_total} segundos")
+def anadir_pista_a_playlist(usuario, gestor, biblioteca):
+    if not biblioteca._pistas:
+        print("No hay pistas en el catálogo.")
+        return
+    if not usuario._playlists:
+        print("No tienes playlists. Crea una primero.")
+        return
+    listar_pistas(biblioteca)
+    pista = pedir_indice(biblioteca._pistas, "Número de pista: ")
+    if not pista:
+        return
+    listar_mis_playlists(usuario)
+    pl = pedir_indice(usuario._playlists, "Número de playlist: ")
+    if not pl:
+        return
+    pl.agregar_pista(pista)
+    gestor.guardar_playlists_usuario(usuario)
+    print(f"'{pista.titulo}' añadida a '{pl.titulo}'.")
 
 
+def reproducir_playlist(usuario):
+    if not usuario._playlists:
+        print("No tienes playlists.")
+        return
+    listar_mis_playlists(usuario)
+    pl = pedir_indice(usuario._playlists, "Número de playlist: ")
+    if pl:
+        pl.reproducir()
+
+
+def eliminar_playlist(usuario, gestor, biblioteca):
+    if not usuario._playlists:
+        print("No tienes playlists.")
+        return
+    listar_mis_playlists(usuario)
+    pl = pedir_indice(usuario._playlists, "Número a eliminar: ")
+    if not pl:
+        return
+    confirmacion = input(f"¿Eliminar '{pl.titulo}'? (s/n): ").strip().lower()
+    if confirmacion == "s":
+        usuario.eliminar_playlist(pl)
+        gestor.guardar_playlists_usuario(usuario)
+        print("Playlist eliminada.")
+
+
+def ver_favoritos(usuario):
+    if not usuario._favoritos:
+        print("No tienes favoritos.")
+    else:
+        print("Tus favoritos:")
+        for p in usuario._favoritos:
+            print(f"  {p}")
+
+
+def anadir_favorito(usuario, biblioteca):
+    listar_pistas(biblioteca)
+    p = pedir_indice(biblioteca._pistas, "Número de pista: ")
+    if p:
+        usuario.agregar_a_favoritos(p)
+        print(f"'{p.titulo}' añadida a favoritos.")
+
+
+def ver_todos_usuarios(gestor):
+    print("\nUsuarios registrados:")
+    for u in gestor._usuarios:
+        print(f"  {u.nombre} | {u.email} | {u.tipo_cuenta()} | {len(u._playlists)} playlist(s)")
+
+
+def eliminar_pista_catalogo(biblioteca):
+    if not biblioteca._pistas:
+        print("No hay pistas.")
+        return
+    listar_pistas(biblioteca)
+    p = pedir_indice(biblioteca._pistas, "Número a eliminar: ")
+    if not p:
+        return
+    confirmacion = input(f"¿Eliminar '{p.titulo}' del catálogo? (s/n): ").strip().lower()
+    if confirmacion == "s":
+        biblioteca.eliminar_pista(p)
+        biblioteca.guardar_csv()
+        print("Pista eliminada del catálogo.")
+
+
+def mostrar_estadisticas(usuario, biblioteca):
+    duracion_total = 0
+    for p in biblioteca._pistas:
+        duracion_total += p.duracion
+    print(f"\n  Pistas en catálogo : {len(biblioteca._pistas)}")
+    print(f"  Playlists globales : {len(biblioteca._playlists)}")
+    print(f"  Mis playlists      : {len(usuario._playlists)}")
+    print(f"  Duración catálogo  : {duracion_total}s ({duracion_total // 60} min)")
+
+
+def bucle_sesion(usuario, gestor, biblioteca):
+    """
+    Bucle de menú para el usuario activo.
+    Devuelve True si hay que volver al login, False si hay que salir.
+    """
+    gestor.cargar_playlists_usuario(usuario, biblioteca)
+    es_premium = isinstance(usuario, (UsuarioPremium, UsuarioSuper))
+    es_admin   = isinstance(usuario, (UsuarioAdministrador, UsuarioSuper))
+
+    while True:
+        mostrar_menu(usuario)
+        op = input("Elige una opción: ").strip()
+
+        if   op == "1":  listar_pistas(biblioteca)
+        elif op == "2":  buscar_pistas(biblioteca)
+        elif op == "3":  anadir_pista_catalogo(biblioteca)
+        elif op == "4":  reproducir_pista(biblioteca)
+        elif op == "5":  listar_mis_playlists(usuario)
+        elif op == "6":  crear_playlist(usuario, gestor, biblioteca)
+        elif op == "7":  anadir_pista_a_playlist(usuario, gestor, biblioteca)
+        elif op == "8":  reproducir_playlist(usuario)
+        elif op == "9":  eliminar_playlist(usuario, gestor, biblioteca)
+        elif op == "10":
+            if es_premium: ver_favoritos(usuario)
+            else: print("Solo disponible para cuentas Premium o Super.")
+        elif op == "11":
+            if es_premium: anadir_favorito(usuario, biblioteca)
+            else: print("Solo disponible para cuentas Premium o Super.")
+        elif op == "12":
+            if es_admin: ver_todos_usuarios(gestor)
+            else: print("Solo disponible para Administrador o Super.")
+        elif op == "13":
+            if es_admin: eliminar_pista_catalogo(biblioteca)
+            else: print("Solo disponible para Administrador o Super.")
+        elif op == "14": mostrar_estadisticas(usuario, biblioteca)
+        elif op == "15":
+            gestor.guardar_playlists_usuario(usuario)
+            return True
+        elif op == "0":
+            gestor.guardar_playlists_usuario(usuario)
+            return False
+        else:
+            print("Opción no válida.")
+
+# main
 def main():
+    # Cargar biblioteca global
     biblioteca = Biblioteca()
     biblioteca.cargar_csv()
     if not biblioteca._pistas and not biblioteca._playlists:
         crear_datos_ejemplo(biblioteca)
-        biblioteca.guardar_csv() 
+        biblioteca.guardar_csv()
 
-    print("\nBienvenido a la Biblioteca Musical.")
+    # Cargar usuarios
+    gestor = GestorUsuarios(CARPETA_DATOS)
+    gestor.cargar()
+    if not gestor._usuarios:
+        crear_usuarios_ejemplo(gestor)
 
-    gratis = UsuarioGratis("Ana", "ana@gmail.com", 20, "Madrid")
-    premium = UsuarioPremium("Luis", "luis@gmail.com", 25, "Barcelona")
-    admin = UsuarioAdministrador("Carlos", "admin@gmail.com", 30, "Valencia")
-    super_usuario = UsuarioSuper("Sergio", "super@gmail.com", 35, "Sevilla")
-
-    usuarios = [gratis, premium, admin, super_usuario]
-
-    print("\n=== TIPOS DE CUENTA ===")
-
-    for usuario in usuarios:
-        print(f"{usuario.nombre}: {usuario.tipo_cuenta()}")
-
+    # Bucle de sesiones (permite cambiar de usuario sin salir)
     while True:
-        mostrar_menu()
-        opcion = input("Elige una opción: ").strip()
-
-        if opcion == "1":
-            listar_pistas(biblioteca)
-        elif opcion == "2":
-            listar_playlists(biblioteca)
-        elif opcion == "3":
-            crear_pista_interactiva(biblioteca)
-        elif opcion == "4":
-            crear_playlist_interactiva(biblioteca)
-        elif opcion == "5":
-            agregar_pista_a_playlist(biblioteca)
-        elif opcion == "6":
-            buscar_pistas(biblioteca)
-        elif opcion == "7":
-            reproducir_pista(biblioteca)
-        elif opcion == "8":
-            reproducir_playlist(biblioteca)
-        elif opcion == "9":
-            mostrar_estadisticas(biblioteca)
-        elif opcion == "10":
-            eliminar_pista_interactiva(biblioteca)
-        elif opcion == "11":
-            eliminar_playlist_interactiva(biblioteca)
-        elif opcion == "0":
-            biblioteca.guardar_csv() 
-            print("Gracias por usar la Biblioteca Musical")
+        usuario = pantalla_login(gestor)
+        if usuario is None:
+            biblioteca.guardar_csv()
+            gestor.guardar()
+            print("¡Hasta pronto!")
             break
-        else:
-            print("Esta opción no ves álida. Elige del 0 al 9.")
+
+        cambiar_usuario = bucle_sesion(usuario, gestor, biblioteca)
+        if not cambiar_usuario:
+            biblioteca.guardar_csv()
+            gestor.guardar()
+            print("¡Hasta pronto!")
+            break
 
 
 if __name__ == "__main__":
