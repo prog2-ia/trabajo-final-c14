@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Sistema de gestión de biblioteca musical desarrollado en Python utilizando principios de **Programación Orientada a Objetos**. Permite organizar, gestionar e interactuar con contenido musical: pistas, álbumes y playlists, con persistencia de datos mediante archivos CSV.
+Sistema de gestión de biblioteca musical desarrollado en Python utilizando principios de **Programación Orientada a Objetos**. Permite organizar, gestionar e interactuar con contenido musical: pistas, álbumes y playlists, con un sistema completo de usuarios y persistencia de datos mediante archivos CSV y binarios (pickle).
 
 ---
 
@@ -10,10 +10,13 @@ Sistema de gestión de biblioteca musical desarrollado en Python utilizando prin
 
 - **Gestión de pistas**: Crear, buscar, reproducir y eliminar pistas musicales
 - **Gestión de playlists**: Crear, reproducir y eliminar listas de reproducción con estado de ánimo asociado
-- **Géneros dinámicos**: Los géneros no están limitados a una lista fija, al introducir uno nuevo se añade automáticamente
+- **Sistema de usuarios**: Registro y gestión de usuarios con cuatro niveles de cuenta (Gratis, Premium, Administrador y Super)
+- **Géneros dinámicos**: Los géneros no están limitados a una lista fija; al introducir uno nuevo se añade automáticamente
 - **Búsqueda flexible**: Filtrado por título, artista o género
 - **Estadísticas**: Número de pistas, playlists y duración total de la biblioteca
-- **Persistencia CSV**: Los datos se guardan y cargan automáticamente entre sesiones
+- **Persistencia CSV**: Los datos de pistas y playlists se guardan y cargan automáticamente entre sesiones
+- **Persistencia binaria (pickle)**: Los objetos de usuario se pueden serializar y recuperar en formato binario
+- **Excepciones personalizadas**: Sistema de errores propio para un manejo claro y preciso de situaciones excepcionales
 - **Validación de entradas**: Control de errores en todas las entradas del usuario
 
 ---
@@ -47,19 +50,26 @@ biblio_musical/
 │   ├── estadistica.py               # Métodos estáticos de análisis
 │   ├── reproductor.py               # Sistema de reproducción
 │   ├── validador.py                 # Validación de entradas
-│   └── csv_manager.py               # Lectura y escritura de archivos CSV
+│   ├── csv_manager.py               # Lectura y escritura de archivos CSV
+│   ├── gestor_usuarios.py           # CRUD de usuarios y persistencia CSV/pickle
+│   └── pickle_manager.py            # Serialización binaria de usuarios con pickle
 │
-├── usuarios/                        # Sistema de usuarios (estructura base)
+├── usuarios/                        # Sistema de usuarios con jerarquía de privilegios
 │   ├── __init__.py
-│   ├── usuario.py                   # Clase base de usuario
-│   ├── usuario_gratis.py            # Usuario con funcionalidad limitada
-│   ├── usuario_premium.py           # Usuario con acceso completo
-│   ├── usuario_administrador.py     # Administrador con privilegios extra
-│   └── usuario_super.py             # Superusuario del sistema
+│   ├── usuario.py                   # Clase base con datos personales y playlists
+│   ├── usuario_gratis.py            # Límite de playlists y reproducciones diarias
+│   ├── usuario_premium.py           # Favoritos, descarga offline y calidad HD
+│   ├── usuario_administrador.py     # Gestión global de usuarios y playlists
+│   └── usuario_super.py             # Herencia múltiple: Admin + Premium
 │
-└── datos/                           # Archivos CSV generados automáticamente
+├── excepciones/                     # Excepciones personalizadas del sistema
+│   └── excepciones.py               # Jerarquía completa de errores propios
+│
+└── datos/                           # Archivos de persistencia generados automáticamente
     ├── pistas.csv
-    └── playlists.csv
+    ├── playlists.csv
+    ├── usuarios.csv
+    └── usuarios.pkl                 # Snapshot binario de los usuarios (pickle)
 ```
 
 ---
@@ -77,12 +87,38 @@ biblio_musical/
 | `Album` | `ColeccionMusical` | Colección agrupada por artista |
 | `Playlist` | `ColeccionMusical` | Lista con estado de ánimo asociado |
 
+### Jerarquía de usuarios
+
+| Clase | Hereda de | Descripción |
+|---|---|---|
+| `Usuario` | — | Clase base con datos personales y gestión de playlists |
+| `UsuarioGratis` | `Usuario` | Máximo 3 playlists y 20 reproducciones diarias |
+| `UsuarioPremium` | `Usuario` | Favoritos, escucha sin anuncios y descarga de playlists |
+| `UsuarioAdministrador` | `Usuario` | Gestión global: banear usuarios, eliminar contenido ajeno |
+| `UsuarioSuper` | `UsuarioAdministrador`, `UsuarioPremium` | Combina privilegios de Admin y Premium (herencia múltiple) |
+
 ### Servicios
 
 - **`Biblioteca`**: Gestión central; almacena pistas y playlists, búsqueda y persistencia CSV
+- **`GestorUsuarios`**: CRUD de usuarios, persistencia en CSV y en pickle
+- **`PickleManager`**: Serialización y deserialización binaria de la lista de usuarios
 - **`Estadistica`**: Métodos estáticos para calcular duración total, promedio, pista más larga/corta
 - **`Validador`**: Valida títulos, artistas, duración y géneros
 - **`csv_manager`**: Funciones de lectura, escritura, modificación y eliminación en CSV
+
+### Excepciones personalizadas
+
+| Excepción | Cuándo se lanza |
+|---|---|
+| `BibliotecaError` | Base de todos los errores del sistema |
+| `PistaNoEncontradaError` | Se busca una pista que no existe |
+| `PlaylistNoEncontradaError` | Se busca una playlist que no existe |
+| `UsuarioNoEncontradoError` | Se busca un usuario que no existe |
+| `UsuarioYaExisteError` | Se intenta registrar un usuario duplicado |
+| `LimiteAlcanzadoError` | Usuario gratis supera su cuota de playlists o reproducciones |
+| `PermisoDenegadoError` | Un usuario intenta una acción que no le corresponde |
+| `DuracionInvalidaError` | La duración de una pista es negativa o cero |
+| `PersistenciaError` | Fallo al leer o escribir un archivo (CSV o pickle) |
 
 ---
 
@@ -124,6 +160,7 @@ La primera vez que se ejecuta, se crean automáticamente pistas y playlists de e
 9.  Estadísticas básicas
 10. Eliminar pista
 11. Eliminar playlist
+12. Gestión de usuarios
 0.  Salir
 ```
 
@@ -137,12 +174,17 @@ Al introducir un género que no esté en la lista, se añade automáticamente pa
 
 ## Persistencia de datos
 
-Los datos se guardan en la carpeta `datos/` en formato CSV:
+Los datos se guardan en la carpeta `datos/` en dos formatos:
 
+**CSV (texto legible)**
 - `pistas.csv` — título, artista, género y duración de cada pista
 - `playlists.csv` — título, estado de ánimo y pistas de cada playlist
+- `usuarios.csv` — nombre, email, edad, dirección y tipo de cada usuario
 
-El guardado se hace automáticamente al crear o eliminar pistas y playlists, y también al salir con la opción `0`.
+**Pickle (binario)**
+- `usuarios.pkl` — snapshot completo de la lista de usuarios serializada con `pickle`
+
+El guardado se realiza automáticamente al crear o eliminar elementos y también al salir con la opción `0`.
 
 ---
 
