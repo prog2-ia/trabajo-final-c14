@@ -6,7 +6,7 @@ from usuarios.usuario_administrador import UsuarioAdministrador
 from usuarios.usuario_super import UsuarioSuper
 from playlist.playlist import Playlist
 from servicios.pickle_manager import PickleManager
-from excepciones.excepciones import UsuarioYaExisteError, UsuarioNoEncontradoError
+from excepciones import UsuarioYaExisteError, UsuarioNoEncontradoError
 
 # Diccionario para convertir entre el string del CSV y la clase correspondiente
 TIPOS_USUARIO = {

@@ -1,6 +1,6 @@
 import pickle
 import os
-from excepciones.excepciones import PersistenciaError
+from excepciones import PersistenciaError
 
 
 class PickleManager:
