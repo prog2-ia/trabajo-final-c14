@@ -6,7 +6,15 @@ class ElementoMusical(Contenido):
     """ Representa cualquier cosa que sea música individual -> canciones """
 
     def __init__(self, titulo: str, artista: "Artista", genero: str, duracion: int):
-        """ Llamamos al constructor de la clase padre para inicializar el título """
+        """
+        Llamamos al constructor de la clase padre para inicializar el título
+        
+        Args:
+            titulo (str): El título de la canción.
+            artista (Artista): El artista que interpreta la canción.
+            genero (str): El género musical de la canción.
+            duracion (int): La duración de la canción
+        """
         super().__init__(titulo)
         self.artista = artista      
         self.genero = genero       
