@@ -57,6 +57,7 @@ def crear_usuarios_ejemplo(gestor):
     gestor.agregar(gestor.crear_usuario("Carlos", "admin@gmail.com", 30, "Valencia",  "administrador"))
     gestor.agregar(gestor.crear_usuario("Sergio", "super@gmail.com", 35, "Sevilla",   "super"))
     gestor.guardar()
+    gestor.guardar_pickle()
     print("Usuarios de ejemplo creados.")
 
 # funciones de entrada
@@ -127,6 +128,7 @@ def pantalla_login(gestor):
             if u:
                 gestor.agregar(u)
                 gestor.guardar()
+                gestor.guardar_pickle()
                 print(f"Usuario '{u.nombre}' creado. ¡Bienvenido/a!")
                 return u
         else:
@@ -246,7 +248,12 @@ def reproducir_pista(biblioteca):
     listar_pistas(biblioteca)
     p = pedir_indice(biblioteca._pistas, "Número de pista: ")
     if p:
+        print("\n▶ Reproduciendo...")
         p.reproducir()
+        minutos = p.duracion // 60
+        segundos = p.duracion % 60
+        print(f"   Duración: {minutos}:{segundos:02d} min")
+        print("- Reproducción finalizada.")
 
 
 def listar_mis_playlists(usuario):
@@ -300,7 +307,15 @@ def reproducir_playlist(usuario):
     listar_mis_playlists(usuario)
     pl = pedir_indice(usuario._playlists, "Número de playlist: ")
     if pl:
-        pl.reproducir()
+        if not pl._pistas:
+            print("Esta playlist no tiene pistas.")
+            return
+        print(f"\n- Reproduciendo playlist: {pl.titulo} ({pl.estado_animo})")
+        print(f"   {len(pl._pistas)} pista(s) en cola\n")
+        for i, p in enumerate(pl._pistas, 1):
+            print(f"   {i}. ", end="")
+            p.reproducir()
+        print("■ Playlist finalizada.")
 
 
 def eliminar_playlist(usuario, gestor, biblioteca):
@@ -315,6 +330,8 @@ def eliminar_playlist(usuario, gestor, biblioteca):
     if confirmacion == "s":
         usuario.eliminar_playlist(pl)
         gestor.guardar_playlists_usuario(usuario)
+        gestor.guardar()
+        gestor.guardar_pickle()
         print("Playlist eliminada.")
 
 
@@ -410,6 +427,7 @@ def bucle_sesion(usuario, gestor, biblioteca):
         else:
             print("Opción no válida.")
 
+
 # main
 def main():
     # Cargar biblioteca global
@@ -419,9 +437,11 @@ def main():
         crear_datos_ejemplo(biblioteca)
         biblioteca.guardar_csv()
 
-    # Cargar usuarios
+    # Cargar usuarios — primero intenta pickle, si no hay carga el CSV
     gestor = GestorUsuarios(CARPETA_DATOS)
-    gestor.cargar()
+    gestor.cargar_pickle()
+    if not gestor._usuarios:
+        gestor.cargar()
     if not gestor._usuarios:
         crear_usuarios_ejemplo(gestor)
 
@@ -431,6 +451,7 @@ def main():
         if usuario is None:
             biblioteca.guardar_csv()
             gestor.guardar()
+            gestor.guardar_pickle()
             print("¡Hasta pronto!")
             break
 
@@ -438,6 +459,7 @@ def main():
         if not cambiar_usuario:
             biblioteca.guardar_csv()
             gestor.guardar()
+            gestor.guardar_pickle()
             print("¡Hasta pronto!")
             break
 
