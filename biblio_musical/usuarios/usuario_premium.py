@@ -18,17 +18,21 @@ class UsuarioPremium(Usuario):
 
 
     def agregar_a_favoritos(self, cancion):
+        """Añade una canción al listado interno de favoritos del usuario si no se encuentra ya indexada."""
         if cancion not in self._favoritos:
             self._favoritos.append(cancion)
 
     def mostrar_favoritos(self):
+        """ Muestra por consola el título de todas las canciones añadidas a la lista de favoritos. """
         for c in self._favoritos:
             print(c.titulo)
 
     def escuchar_sin_anuncios(self):
+        """ Simula el inicio del flujo de reproducción"""
         print("Reproduciendo música sin anuncios en calidad HD")
     
     def tipo_cuenta(self):
+        """Identifica la categoría de la cuenta de usuario."""
         return "Cuenta premium"
 
     def descargar_playlist(self, playlist):
@@ -41,7 +45,9 @@ class UsuarioPremium(Usuario):
         print(f"{self.nombre} ha descargado la playlist {playlist.titulo}")
 
     def __str__(self):
+        """representación en formato de texto del Usuario Premium."""
         return f"Usuario Premium: {self.nombre}"
 
     def __repr__(self):
+        """representación técnica del objeto UsuarioPremium."""
         return f"UsuarioPremium(nombre='{self.nombre}')"

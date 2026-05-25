@@ -25,6 +25,12 @@ class GestorUsuarios:
     """
 
     def __init__(self, carpeta_datos):
+        """
+        Inicializa el gestor de usuarios configurando el directorio de datos.
+        
+        Args:
+            carpeta_datos: Ruta del directorio donde se almacenarán los archivos.
+        """
         self._carpeta = carpeta_datos
         os.makedirs(self._carpeta, exist_ok=True)
         self._usuarios = []

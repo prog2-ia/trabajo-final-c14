@@ -67,6 +67,10 @@ class Usuario:
         """Obtiene la fecha y hora en que se creó el usuario (Solo lectura)."""
         return self._fecha_registro
 
+    def tipo_cuenta(self):
+        """Identifica la categoría de la cuenta de usuario."""
+        return "Cuenta estándar"
+
     #Gestión de Playlists
 
     def crear_playlist(self, playlist):
@@ -96,7 +100,9 @@ class Usuario:
             print(p.titulo)
 
     def __str__(self):
+        """representación en formato de texto del Usuario."""
         return f"Usuario: {self._nombre} ({self._email}, {self._edad} años, {self._direccion})"
 
     def __repr__(self):
+        """representación técnica del objeto Usuario."""
         return f"Usuario(nombre='{self._nombre}', email='{self._email}', edad={self._edad}, direccion='{self._direccion}')"

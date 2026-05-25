@@ -1,3 +1,11 @@
+"""
+Módulo Principal de Interfaz de Usuario
+
+Coordina el flujo completo de la biblioteca musical, gestionando el inicio de sesión,
+los formularios de entrada de datos, el enrutamiento de menús según el tipo de cuenta 
+y la persistencia final de la sesión.
+"""
+
 import os
 from contenido.pista import Pista
 from contenido.genero import Genero
@@ -8,6 +16,7 @@ from usuarios.usuario_premium import UsuarioPremium
 from usuarios.usuario_administrador import UsuarioAdministrador
 from usuarios.usuario_super import UsuarioSuper
 
+#rutas globales del sistema
 CARPETA_DATOS = os.path.abspath(os.path.join(os.path.dirname(__file__), "datos"))
 
 GENEROS_DISPONIBLES = [
@@ -17,6 +26,13 @@ GENEROS_DISPONIBLES = [
 
 # datos de ejemplos
 def crear_datos_ejemplo(biblioteca):
+    """
+    Puebla la biblioteca global con un conjunto inicial de géneros, pistas y playlists
+    de demostración
+    
+    Args:
+        biblioteca: Instancia global de la biblioteca a rellenar.
+    """
     rock = Genero("Rock") 
     pop = Genero("Pop")
     jazz = Genero("Jazz")
@@ -52,6 +68,12 @@ def crear_datos_ejemplo(biblioteca):
 
 
 def crear_usuarios_ejemplo(gestor):
+    """
+    Registra un conjunto inicial de usuarios con diferentes perfiles y roles
+    
+    Args:
+        gestor: El gestor de usuarios encargado de procesar el alta y almacenamiento.
+    """
     gestor.agregar(gestor.crear_usuario("Ana",    "ana@gmail.com",   20, "Madrid",    "gratis"))
     gestor.agregar(gestor.crear_usuario("Luis",   "luis@gmail.com",  25, "Barcelona", "premium"))
     gestor.agregar(gestor.crear_usuario("Carlos", "admin@gmail.com", 30, "Valencia",  "administrador"))
@@ -62,6 +84,13 @@ def crear_usuarios_ejemplo(gestor):
 
 # funciones de entrada
 def pedir_genero():
+    """
+    Muestra la lista de géneros disponibles y solicita al usuario seleccionar o 
+    introducir un nuevo género por teclado, garantizando su validez.
+    
+    Returns:
+        Un objeto Genero inicializado con la cadena introducida.
+    """
     print("Géneros disponibles:")
     for g in GENEROS_DISPONIBLES:
         print(f"  - {g}")
@@ -77,6 +106,12 @@ def pedir_genero():
 
 
 def pedir_duracion():
+    """
+    Solicita una duración temporal por consola controlando que el formato ingresado se corresponda con un entero positivo.
+    
+    Returns:
+        El número de segundos como entero.
+    """
     while True:
         try:
             d = int(input("Duración en segundos: ").strip())
@@ -173,6 +208,12 @@ def formulario_nuevo_usuario(gestor):
 
 # menu principal
 def mostrar_menu(usuario):
+    """
+    Imprime dinámicamente las opciones disponibles
+
+    Args:
+        usuario: El usuario en sesión sobre el cual inspeccionar roles.
+    """
     es_premium = isinstance(usuario, (UsuarioPremium, UsuarioSuper))
     es_admin   = isinstance(usuario, (UsuarioAdministrador, UsuarioSuper))
 
@@ -203,6 +244,7 @@ def mostrar_menu(usuario):
 
 # acciones
 def listar_pistas(biblioteca):
+    """Muestra por consola la totalidad de pistas musicales indexadas en la biblioteca global."""
     if not biblioteca._pistas:
         print("No hay pistas en el catálogo.")
         return
@@ -212,6 +254,7 @@ def listar_pistas(biblioteca):
 
 
 def buscar_pistas(biblioteca):
+    """Busca las pistas aplicando filtros."""
     criterio = input("Buscar (título / artista / género): ").strip().lower()
     if not criterio:
         print("Escribe algo para buscar.")
@@ -228,6 +271,7 @@ def buscar_pistas(biblioteca):
 
 
 def anadir_pista_catalogo(biblioteca):
+    """Solicita los datos requeridos e añade una nueva pista"""
     try:
         titulo  = input("Título: ").strip()
         artista = input("Artista: ").strip()
@@ -242,6 +286,7 @@ def anadir_pista_catalogo(biblioteca):
 
 
 def reproducir_pista(biblioteca):
+    """Permite seleccionar una pista del catálogo y procesa su simulación."""
     if not biblioteca._pistas:
         print("No hay pistas.")
         return
@@ -257,6 +302,7 @@ def reproducir_pista(biblioteca):
 
 
 def listar_mis_playlists(usuario):
+    """Imprime playlists personales vinculadas al usuario."""
     if not usuario._playlists:
         print("No tienes playlists.")
         return
@@ -266,6 +312,7 @@ def listar_mis_playlists(usuario):
 
 
 def crear_playlist(usuario, gestor, biblioteca):
+    """Inicializa una nueva lista vacía delegando en el usuario para verificar restricciones de cuota."""
     nombre = input("Nombre de la playlist: ").strip()
     estado = input("Estado de ánimo: ").strip()
     if not nombre:
@@ -281,6 +328,7 @@ def crear_playlist(usuario, gestor, biblioteca):
 
 
 def anadir_pista_a_playlist(usuario, gestor, biblioteca):
+    """Vincula una de las canciones disponibles en el catálogo general dentro de una playlist propia."""
     if not biblioteca._pistas:
         print("No hay pistas en el catálogo.")
         return
@@ -301,6 +349,7 @@ def anadir_pista_a_playlist(usuario, gestor, biblioteca):
 
 
 def reproducir_playlist(usuario):
+    """Desencadena la reproducción en secuencia de todas las pistas anexadas a la playlist elegida."""
     if not usuario._playlists:
         print("No tienes playlists.")
         return
@@ -319,6 +368,7 @@ def reproducir_playlist(usuario):
 
 
 def eliminar_playlist(usuario, gestor, biblioteca):
+    """Elimina irreversiblemente una playlist del usuario activo."""
     if not usuario._playlists:
         print("No tienes playlists.")
         return
@@ -336,6 +386,7 @@ def eliminar_playlist(usuario, gestor, biblioteca):
 
 
 def ver_favoritos(usuario):
+    """Lista las canciones marcadas (Solo cuentas Premium/Super)."""
     if not usuario._favoritos:
         print("No tienes favoritos.")
     else:
@@ -345,6 +396,7 @@ def ver_favoritos(usuario):
 
 
 def anadir_favorito(usuario, biblioteca):
+    """Añade una pista en la colección de favoritos del usuario (Solo cuentas Premium/Super)."""
     listar_pistas(biblioteca)
     p = pedir_indice(biblioteca._pistas, "Número de pista: ")
     if p:
@@ -353,12 +405,14 @@ def anadir_favorito(usuario, biblioteca):
 
 
 def ver_todos_usuarios(gestor):
+    """información de todas las cuentas creadas (Solo Administradores)."""
     print("\nUsuarios registrados:")
     for u in gestor._usuarios:
         print(f"  {u.nombre} | {u.email} | {u.tipo_cuenta()} | {len(u._playlists)} playlist(s)")
 
 
 def eliminar_pista_catalogo(biblioteca):
+    """Borra de forma definitiva una pista musical del catálogo maestro y sus playlists (Solo Administradores)."""
     if not biblioteca._pistas:
         print("No hay pistas.")
         return
@@ -374,6 +428,7 @@ def eliminar_pista_catalogo(biblioteca):
 
 
 def mostrar_estadisticas(usuario, biblioteca):
+    """Calcula y muestra métricas globales, acumulando tiempos globales de las canciones del sistema."""
     duracion_total = 0
     for p in biblioteca._pistas:
         duracion_total += p.duracion

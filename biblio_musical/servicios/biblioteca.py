@@ -29,6 +29,19 @@ class Biblioteca:
             pl.reproducir()
 
     def buscar(self, genero=None, artista=None, max_duracion=None,estado_animo=None, calidad=None) -> list:
+        """
+        Busca y filtra pistas dentro de la biblioteca según criterios.
+        
+        Args:
+            genero: Nombre del género musical.
+            artista: Nombre del artista.
+            max_duracion: Duración máxima permitida para la pista (en segundos).
+            estado_animo: estado de ánimo de la pista.
+            calidad: calidad de la pista.
+            
+        Returns:
+            Una lista con los objetos Pista que cumplen con todos los criterios.
+        """
         resultados = self._pistas
         if genero is not None:
             resultados = [p for p in resultados
@@ -128,14 +141,18 @@ class Biblioteca:
 
 
     def __str__(self):
+        """ Devuelve una representación de la Biblioteca en formato de cadena de texto"""
         return f"Biblioteca: {len(self._pistas)} pistas, {len(self._playlists)} playlists"
 
     def __repr__(self):
+        """ Devuelve una representación técnica del objeto Biblioteca """
         return f"Biblioteca(pistas={len(self._pistas)}, playlists={len(self._playlists)})"
     
     def obtener_playlists(self) -> list[Playlist]:
+        """Proporciona una copia superficial de la lista global de playlists."""
         return self._playlists.copy()
     
     def buscar_por_titulo(self, titulo: str) -> list[Pista]:
+        """Busca pistas cuyo título contenga una subcadena específica"""
         titulo = titulo.lower().strip()
         return [p for p in self._pistas if titulo in p.titulo.lower()]

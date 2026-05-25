@@ -7,6 +7,12 @@ class PickleManager:
     """Gestiona la serialización y deserialización binaria de la lista de usuarios."""
 
     def __init__(self, ruta: str):
+        """
+        Inicializa el gestor de archivos binarios Pickle.
+        
+        Args:
+            ruta: Dirección o ruta completa del archivo .pkl de destino.
+        """
         self._ruta = ruta
         os.makedirs(os.path.dirname(ruta), exist_ok=True)
 
@@ -58,4 +64,5 @@ class PickleManager:
             raise PersistenciaError(self._ruta, "eliminar") from e
 
     def __repr__(self):
+        """Devuelve una representación técnica del estado y configuración del objeto PickleManager."""
         return f"PickleManager(ruta='{self._ruta}', existe={self.existe()})"
