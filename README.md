@@ -136,12 +136,30 @@ biblio_musical/
 
 ## Uso
 
+### Opción 1 — Ejecutable (solo Linux, sin necesidad de Python)
+
+Se incluye un ejecutable precompilado para Linux en `biblio_musical/dist/app`. No requiere tener Python instalado.
+
+```bash
+cd biblio_musical
+./dist/app
+```
+
+> Si el sistema no te deja ejecutarlo, dale permisos primero:
+> ```bash
+> chmod +x dist/app
+> ```
+
+### Opción 2 — Con Python
+
 Ejecuta el programa desde dentro de la carpeta `biblio_musical`:
 
 ```bash
 cd biblio_musical
-python main.py
+python main.py o python app.py
 ```
+
+---
 
 La primera vez que se ejecuta, se crean automáticamente pistas y playlists de ejemplo y se guardan en `datos/`. En siguientes ejecuciones, los datos se cargan desde los CSV.
 
