@@ -3,6 +3,12 @@ class Reproductor:
     """Se encarga de la interfaz de reproducción de audio """
 
     def __init__(self, volumen=50):
+        """
+        Inicializa una nueva instancia del Reproductor.
+        
+        Args:
+            volumen: Nivel inicial de volumen del audio (por defecto es 50).
+        """
         self.volumen = volumen
 
     def reproducir(self, pista):

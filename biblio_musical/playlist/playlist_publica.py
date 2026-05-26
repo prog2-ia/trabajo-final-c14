@@ -18,7 +18,9 @@ class PlaylistPublica(Playlist):
             print(p.info())
 
     def __str__(self) -> str:
+        """ Devuelve una representación de la PlaylistPublica en formato de cadena de texto"""
         return f"Playlist pública: {self.titulo} (Estado de ánimo: {self.estado_animo})"
     
     def __repr__(self) -> str:
+        """ Devuelve una representación técnica del objeto PlaylistPublica."""
         return f"Playlist(titulo='{self.titulo}', estado_animo='{self.estado_animo}')"

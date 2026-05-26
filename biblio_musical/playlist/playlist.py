@@ -61,27 +61,50 @@ class Playlist(ColeccionMusical):
             print(p.info())
 
     def __str__(self) -> str:
+        """ Devuelve una representación de la Playlist en formato de cadena de texto"""
         return f"Playlist: {self.titulo} (Estado de ánimo: {self._estado_animo})"
 
     def __repr__(self) -> str:
+        """ Devuelve una representación técnica del objeto Playlist """
         return f"Playlist(titulo='{self.titulo}', estado_animo='{self._estado_animo}')"
     
 
     def __add__(self, nueva_pista):
-        """Usa self.titulo y self._pistas (que viene de ColeccionMusical)"""
+        """
+        Sobrecarga del operador +. Crea una nueva playlist combinando las pistas actuales con la nueva pista proporcionada.
+            
+        Returns:
+            Una nueva instancia de Playlist que incluye la pista adicional.
+        """
         nueva_playlist = Playlist(self.titulo, self._estado_animo) # Nueva instancia
         nueva_playlist._pistas = self._pistas.copy()
         nueva_playlist._pistas.append(nueva_pista)
         return nueva_playlist
 
     def __iadd__(self, nueva_pista):
-        """Usa el atributo interno _pistas"""
+        """
+        Sobrecarga del operador +=. Modifica la playlist actual añadiendo una nueva pista a la lista interna.
+
+        Returns:
+            La misma instancia de Playlist modificada.
+        """
         self._pistas.append(nueva_pista) # Modifica la instancia actual
         return self
 
 
     def __getitem__(self, indice):
-        """Acceso por índice a la lista interna _pistas"""
+        """
+        Permite el acceso a las pistas por medio de un índice utilizando corchetes [].
+        
+        Args:
+            indice: La posición entera de la pista requerida.
+            
+        Returns:
+            El objeto pista correspondiente al índice.
+            
+        Raises:
+            IndexError: Si el índice está fuera del rango de la lista de pistas.
+        """
         try:
             return self._pistas[indice]
         except IndexError:
@@ -89,4 +112,5 @@ class Playlist(ColeccionMusical):
         
 
     def __iter__(self) -> Iterator:
+        """Permite que el objeto Playlist sea iterable """
         return iter(self._pistas)

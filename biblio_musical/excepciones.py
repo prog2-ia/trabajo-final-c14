@@ -18,10 +18,17 @@ class BibliotecaError(Exception):
     """Excepción base de todos los errores del sistema."""
 
     def __init__(self, mensaje: str = "Error en la Biblioteca Musical"):
+        """
+        Inicializa la excepción base
+        
+        Args:
+            mensaje: Texto del motivo del fallo.
+        """
         super().__init__(mensaje)
         self.mensaje = mensaje
 
     def __str__(self):
+        """Devuelve una representación del error"""
         return f"[BibliotecaError] {self.mensaje}"
 
 
@@ -29,11 +36,18 @@ class PistaNoEncontradaError(BibliotecaError):
     """Se lanza cuando se busca una pista que no existe."""
 
     def __init__(self, titulo: str = ""):
+        """
+        Inicializa el error de pista no encontrada, personalizando el detalle si se tiene el título.
+        
+        Args:
+            titulo: Nombre de la pista musical ausente.
+        """
         detalle = f"La pista '{titulo}' no existe en la biblioteca." if titulo else "Pista no encontrada."
         super().__init__(detalle)
         self.titulo = titulo
 
     def __str__(self):
+        """representación en cadena del error de la pista."""
         return f"[PistaNoEncontradaError] {self.mensaje}"
 
 
@@ -41,11 +55,18 @@ class PlaylistNoEncontradaError(BibliotecaError):
     """Se lanza cuando se busca una playlist que no existe."""
 
     def __init__(self, titulo: str = ""):
+        """
+        Inicializa el error de lista de reproducción no encontrada.
+        
+        Args:
+            titulo: Nombre de la playlist que no esta.
+        """
         detalle = f"La playlist '{titulo}' no existe." if titulo else "Playlist no encontrada."
         super().__init__(detalle)
         self.titulo = titulo
 
     def __str__(self):
+        """representación en cadena del error de la playlist."""
         return f"[PlaylistNoEncontradaError] {self.mensaje}"
 
 
@@ -53,6 +74,12 @@ class DuracionInvalidaError(BibliotecaError):
     """Se lanza cuando la duración de una pista es negativa o cero."""
 
     def __init__(self, valor=None):
+        """
+        Inicializa el error de duración inválida guardando el valor erróneo recibido.
+        
+        Args:
+            valor: El dato o número que causó la infracción
+        """
         detalle = (
             f"La duración '{valor}' no es válida. Debe ser un número entero positivo."
             if valor is not None
@@ -62,6 +89,7 @@ class DuracionInvalidaError(BibliotecaError):
         self.valor = valor
 
     def __str__(self):
+        """representación en cadena del error de validación de tiempo."""
         return f"[DuracionInvalidaError] {self.mensaje}"
 
 
@@ -69,11 +97,18 @@ class UsuarioNoEncontradoError(BibliotecaError):
     """Se lanza cuando se busca un usuario que no está registrado."""
 
     def __init__(self, nombre: str = ""):
+        """
+        Inicializa el error de usuario inexistente.
+        
+        Args:
+            nombre: Nombre de usuario o identificador no encontrado.
+        """
         detalle = f"El usuario '{nombre}' no está registrado." if nombre else "Usuario no encontrado."
         super().__init__(detalle)
         self.nombre = nombre
 
     def __str__(self):
+        """representación en cadena del error de perfil no encontrado."""
         return f"[UsuarioNoEncontradoError] {self.mensaje}"
 
 
@@ -81,11 +116,18 @@ class UsuarioYaExisteError(BibliotecaError):
     """Se lanza al intentar registrar un usuario con un nombre ya existente."""
 
     def __init__(self, nombre: str = ""):
+        """
+        Inicializa el error de colisión de usuarios.
+        
+        Args:
+            nombre: Nombre de usuario duplicado.
+        """
         detalle = f"El usuario '{nombre}' ya está registrado." if nombre else "El usuario ya existe."
         super().__init__(detalle)
         self.nombre = nombre
 
     def __str__(self):
+        """representación en cadena del error de duplicidad."""
         return f"[UsuarioYaExisteError] {self.mensaje}"
 
 
@@ -96,12 +138,20 @@ class LimiteAlcanzadoError(BibliotecaError):
     """
 
     def __init__(self, recurso: str = "recurso", limite: int = 0):
+        """
+        Inicializa el error de cuotas guardando los detalles del límite excedido.
+        
+        Args:
+            recurso: Nombre de la métrica saturada
+            limite: Cantidad máxima estipulada para dicho recurso.
+        """
         detalle = f"Has alcanzado el límite de {limite} {recurso} para tu tipo de cuenta."
         super().__init__(detalle)
         self.recurso = recurso
         self.limite = limite
 
     def __str__(self):
+        """representación en cadena del error de límites del plan."""
         return f"[LimiteAlcanzadoError] {self.mensaje}"
 
 
@@ -109,6 +159,13 @@ class PermisoDenegadoError(BibliotecaError):
     """Se lanza cuando un usuario intenta realizar una acción que no le corresponde."""
 
     def __init__(self, accion: str = "", tipo_usuario: str = ""):
+        """
+        Inicializa el error de control de acceso basándose en la acción y el tipo de cuenta.
+        
+        Args:
+            accion: Nombre de la función o método restringido que se intentó invocar.
+            tipo_usuario: categoría de cuenta del usuario.
+        """
         if accion and tipo_usuario:
             detalle = f"El usuario de tipo '{tipo_usuario}' no tiene permiso para '{accion}'."
         else:
@@ -118,6 +175,7 @@ class PermisoDenegadoError(BibliotecaError):
         self.tipo_usuario = tipo_usuario
 
     def __str__(self):
+        """representación en cadena del error de privilegios insuficientes."""
         return f"[PermisoDenegadoError] {self.mensaje}"
 
 
@@ -126,6 +184,13 @@ class PersistenciaError(BibliotecaError):
     """Se lanza cuando falla la lectura o escritura de un archivo (CSV o pickle)."""
 
     def __init__(self, ruta: str = "", operacion: str = "acceder a"):
+        """
+        Inicializa el error de entrada/salida guardando la ruta y la acción fallida.
+        
+        Args:
+            ruta: Ubicación en disco del archivo comprometido.
+            operacion: Tipo de proceso que falló
+        """
         detalle = (
             f"No se pudo {operacion} el archivo '{ruta}'."
             if ruta
@@ -136,4 +201,5 @@ class PersistenciaError(BibliotecaError):
         self.operacion = operacion
 
     def __str__(self):
+        """representación en cadena del error de almacenamiento."""
         return f"[PersistenciaError] {self.mensaje}"
